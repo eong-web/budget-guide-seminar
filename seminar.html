@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>비개발자의 Claude 활용 — 내부 안내 홈페이지 제작 사례</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#16140f;
+  --paper:#f4f1e8;
+  --paper2:#eae5d6;
+  --line:#d8d2c0;
+  --muted:#6f6a5c;
+  --faint:#9a9484;
+  --accent:#c8442a;
+  --accent2:#e0c04a;
+  --plum:#5c3fc4;
+  --plum-soft:#ede9fb;
+  --plum-ink:#3d2a8a;
+  --teal:#1d6e56;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Gowun Batang',serif;
+  --sans:'Noto Sans KR',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--sans);
+  background:#0e0d0a;
+  color:var(--ink);
+  overflow:hidden;
+}
+
+/* ---------- deck frame ---------- */
+.deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+.slide{
+  position:absolute;inset:0;
+  display:none;
+  flex-direction:column;
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(200,68,42,.04), transparent 40%),
+    radial-gradient(circle at 88% 84%, rgba(92,63,196,.04), transparent 42%);
+  padding:clamp(2.2rem,5vw,4.5rem) clamp(2.2rem,7vw,7rem);
+  overflow:hidden;
+}
+.slide.active{display:flex;animation:fade .55s ease}
+@keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* grain texture */
+.slide::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+}
+
+.kicker{
+  font-size:clamp(11px,1vw,13px);font-weight:700;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--accent);
+  display:flex;align-items:center;gap:.7rem;margin-bottom:1.4rem;
+}
+.kicker::before{content:"";width:34px;height:2px;background:var(--accent)}
+.eyebrow-num{font-family:var(--mono);color:var(--faint);font-weight:500}
+
+h1.title{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(2.4rem,6.2vw,5.6rem);line-height:1.04;
+  letter-spacing:-.02em;color:var(--ink);
+}
+h2.slide-h{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(1.7rem,3.6vw,3rem);line-height:1.12;
+  letter-spacing:-.01em;margin-bottom:.5rem;
+}
+.lead{font-size:clamp(15px,1.5vw,20px);color:var(--muted);line-height:1.75;max-width:62ch}
+
+.foot{
+  position:absolute;left:clamp(2.2rem,7vw,7rem);right:clamp(2.2rem,7vw,7rem);
+  bottom:clamp(1.4rem,3vh,2.4rem);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:11px;color:var(--faint);letter-spacing:.04em;
+  border-top:1px solid var(--line);padding-top:.85rem;
+}
+.foot .mono{font-family:var(--mono)}
+
+/* progress */
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:50;transition:width .4s ease}
+
+/* nav controls */
+.ctrl{position:fixed;bottom:18px;right:18px;display:flex;gap:8px;z-index:50}
+.ctrl button{
+  width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.25);
+  background:rgba(20,18,14,.55);color:#fff;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);
+  transition:.15s;
+}
+.ctrl button:hover{background:rgba(200,68,42,.85)}
+
+/* ---- generic building blocks ---- */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,3vw,3.5rem);align-items:center;flex:1;min-height:0}
+.stack{display:flex;flex-direction:column;justify-content:center;min-height:0}
+
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:14px;
+  padding:1.3rem 1.4rem;position:relative;
+}
+.card h3{font-size:clamp(15px,1.4vw,18px);font-weight:700;margin-bottom:.4rem;display:flex;gap:.6rem;align-items:center}
+.card p{font-size:clamp(13px,1.15vw,15px);color:var(--muted);line-height:1.65}
+.card .ic{font-size:22px;line-height:1}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem}
+
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.05em;
+  padding:3px 10px;border-radius:20px;background:var(--plum-soft);color:var(--plum-ink)}
+.tag.red{background:#fbe7e2;color:#a32d2d}
+.tag.teal{background:#e1f5ee;color:#0f6e56}
+.tag.amber{background:#faeeda;color:#854f0b}
+
+/* numbered list */
+.steps-v{display:flex;flex-direction:column;gap:.9rem}
+.step-v{display:flex;gap:1rem;align-items:flex-start}
+.step-v .n{flex-shrink:0;width:38px;height:38px;border-radius:11px;
+  background:var(--ink);color:var(--paper);font-family:var(--mono);font-weight:500;
+  display:flex;align-items:center;justify-content:center;font-size:15px}
+.step-v .b h4{font-size:clamp(14px,1.3vw,17px);font-weight:700;margin-bottom:.15rem}
+.step-v .b p{font-size:clamp(12.5px,1.1vw,14.5px);color:var(--muted);line-height:1.55}
+
+/* big metric */
+.metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.metric{border-left:3px solid var(--accent);padding-left:1.1rem}
+.metric .v{font-family:var(--serif);font-weight:700;font-size:clamp(2rem,4vw,3.4rem);line-height:1;color:var(--ink)}
+.metric .l{font-size:clamp(12px,1.1vw,14px);color:var(--muted);margin-top:.5rem;line-height:1.5}
+
+/* quote / feedback chips */
+.chip-flow{display:flex;flex-wrap:wrap;gap:.6rem}
+.fb-chip{font-family:var(--mono);font-size:clamp(12px,1.2vw,15px);
+  background:#fff;border:1px solid var(--line);border-radius:10px;
+  padding:.55rem .9rem;color:var(--ink)}
+.fb-chip .arr{color:var(--accent);margin-right:.4rem}
+
+/* mock browser window */
+.browser{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  box-shadow:0 24px 60px -28px rgba(20,18,14,.45);width:100%}
+.browser-bar{background:var(--paper2);padding:.6rem .9rem;display:flex;align-items:center;gap:.5rem;border-bottom:1px solid var(--line)}
+.dot{width:11px;height:11px;border-radius:50%}
+.dot.r{background:#e0685a}.dot.y{background:#e3c14e}.dot.g{background:#6bbf72}
+.browser-url{margin-left:.6rem;font-family:var(--mono);font-size:11px;color:var(--faint);
+  background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 12px;flex:1}
+.browser-body{display:flex;min-height:230px}
+.mock-side{width:130px;background:#faf9f5;border-right:1px solid var(--line);padding:.9rem .7rem;flex-shrink:0}
+.mock-logo{font-size:9px;font-weight:700;color:var(--plum-ink);letter-spacing:.06em}
+.mock-logo b{display:block;font-size:12px;color:var(--ink);margin-top:2px}
+.mock-nav{margin-top:.9rem;display:flex;flex-direction:column;gap:3px}
+.mock-nav span{font-size:10.5px;color:var(--muted);padding:5px 7px;border-radius:6px}
+.mock-nav span.on{background:var(--plum-soft);color:var(--plum-ink);font-weight:500}
+.mock-main{flex:1;padding:1rem 1.1rem}
+.mock-main h5{font-size:14px;font-weight:700;margin-bottom:.2rem}
+.mock-main .sub{font-size:10px;color:var(--faint);margin-bottom:.7rem}
+.mock-cards{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.mock-c{border:1px solid var(--line);border-radius:8px;padding:.55rem .6rem}
+.mock-c .ci{font-size:15px}
+.mock-c .ct{font-size:10.5px;font-weight:700;margin-top:.25rem}
+.mock-c .cp{font-size:9px;color:var(--faint);margin-top:1px}
+
+/* timeline horizontal */
+.flow-h{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.flow-step{flex:1;min-width:120px;background:#fff;border:1px solid var(--line);border-radius:12px;
+  padding:1rem;position:relative;margin-right:1.6rem;margin-bottom:1rem}
+.flow-step:last-child{margin-right:0}
+.flow-step::after{content:"→";position:absolute;right:-1.25rem;top:50%;transform:translateY(-50%);
+  color:var(--faint);font-size:18px}
+.flow-step:last-child::after{display:none}
+.flow-step .fn{font-family:var(--mono);font-size:11px;color:var(--accent);font-weight:500}
+.flow-step h4{font-size:14px;font-weight:700;margin:.3rem 0 .25rem}
+.flow-step p{font-size:11.5px;color:var(--muted);line-height:1.5}
+
+/* before/after */
+.ba{display:grid;grid-template-columns:1fr auto 1fr;gap:1.4rem;align-items:center}
+.ba-card{border-radius:14px;padding:1.3rem 1.4rem;border:1px solid var(--line)}
+.ba-card.before{background:#fbf1ef}
+.ba-card.after{background:#eef6f1}
+.ba-card .lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem}
+.ba-card.before .lbl{color:#a32d2d}
+.ba-card.after .lbl{color:#0f6e56}
+.ba-card ul{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.ba-card li{font-size:clamp(12.5px,1.15vw,15px);line-height:1.5;display:flex;gap:.55rem;color:var(--ink)}
+.ba-card li::before{content:"—";color:var(--faint)}
+.ba-arrow{font-size:26px;color:var(--accent)}
+
+/* highlight word */
+.hl{background:linear-gradient(transparent 62%, rgba(224,192,74,.55) 62%);padding:0 .1em}
+.ink-accent{color:var(--accent)}
+
+/* title slide extras */
+.title-meta{display:flex;gap:2rem;margin-top:2.2rem;flex-wrap:wrap}
+.title-meta div{font-size:13px;color:var(--muted)}
+.title-meta div b{display:block;font-family:var(--mono);font-size:11px;color:var(--faint);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem;font-weight:500}
+.brandtag{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.1em;
+  border:1px solid var(--ink);border-radius:30px;padding:.4rem 1rem;color:var(--ink)}
+
+.hint{position:fixed;bottom:18px;left:18px;font-size:11px;color:rgba(255,255,255,.5);
+  font-family:var(--mono);letter-spacing:.05em;z-index:50}
+
+ul.clean{list-style:none;display:flex;flex-direction:column;gap:.8rem}
+ul.clean li{font-size:clamp(13.5px,1.25vw,16.5px);line-height:1.6;display:flex;gap:.7rem;color:var(--ink)}
+ul.clean li b{font-weight:700}
+ul.clean li .dot-li{flex-shrink:0;width:7px;height:7px;border-radius:50%;background:var(--accent);margin-top:.55em}
+
+.section-index{font-family:var(--serif);font-size:clamp(5rem,16vw,13rem);font-weight:700;
+  color:rgba(22,20,15,.06);position:absolute;right:clamp(2rem,5vw,5rem);bottom:-2vh;line-height:.8;pointer-events:none}
+
+@media (max-width:780px){
+  .two-col,.ba{grid-template-columns:1fr}
+  .ba-arrow{transform:rotate(90deg);justify-self:center}
+  .metric-row,.grid-4{grid-template-columns:1fr 1fr}
+  .grid-3{grid-template-columns:1fr}
+  .browser-body{flex-direction:column}
+  .mock-side{width:100%;display:none}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+<div class="deck" id="deck">
+
+<!-- 1. TITLE -->
+<section class="slide active">
+  <div class="kicker">사내 세미나 · AI 활용 사례</div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+    <h1 class="title">개발자가 아니어도,<br><span class="ink-accent">업무용 웹페이지</span>를<br>만들 수 있다면</h1>
+    <p class="lead" style="margin-top:1.8rem">흩어진 부서예산 안내를 Claude로 정리하고,<br>실제 사내 안내 홈페이지로 만들기까지의 과정</p>
+    <div class="title-meta">
+      <div><b>주제</b>내부 안내 홈페이지 제작 사례</div>
+      <div><b>도구</b>Claude (Anthropic)</div>
+      <div><b>대상</b>IP사업본부 부서예산 Guide</div>
+    </div>
+  </div>
+  <div class="foot"><span class="mono">AI SEMINAR / 2026</span><span>발표: 부서예산 가이드 제작</span></div>
+</section>
+
+<!-- 2. AGENDA -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">00</span> 오늘 이야기할 것</div>
+  <h2 class="slide-h">발표 순서</h2>
+  <div class="two-col" style="margin-top:1rem">
+    <div class="stack">
+      <ul class="clean">
+        <li><span class="dot-li"></span><b>왜 만들었나</b> — 기존 안내 방식의 한계</li>
+        <li><span class="dot-li"></span><b>무엇을 만들었나</b> — 결과물 미리보기</li>
+        <li><span class="dot-li"></span><b>어떻게 만들었나</b> — 5단계 제작 프로세스</li>
+        <li><span class="dot-li"></span><b>Claude를 어떻게 썼나</b> — 4가지 활용 포인트</li>
+        <li><span class="dot-li"></span><b>배포는 어떻게</b> — 보안 고려한 검토</li>
+        <li><span class="dot-li"></span><b>그래서 무엇이 좋아졌나</b> — 기대 효과</li>
+      </ul>
+    </div>
+    <div class="stack">
+      <div class="card" style="background:var(--ink);color:var(--paper);border:none">
+        <h3 style="color:var(--paper)">한 줄 요약</h3>
+        <p style="color:rgba(244,241,232,.8);font-size:clamp(14px,1.3vw,17px);margin-top:.4rem">
+          코딩을 모르는 실무자가 AI와 대화하는 것만으로,
+          반복되는 문의를 줄여줄 <span style="color:var(--accent2);font-weight:700">사내 안내 홈페이지</span>를
+          직접 완성했습니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="section-index">A</div>
+  <div class="foot"><span class="mono">AGENDA</span><span class="mono">02</span></div>
+</section>
+
+<!-- 3. PROBLEM -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">01</span> 추진 배경</div>
+  <h2 class="slide-h">정보는 많은데, <span class="hl">찾기가 어려웠다</span></h2>
+  <p class="lead" style="margin-bottom:1.8rem">예산·정산·법인카드 안내가 메일, 문서, 메신저에 흩어져 있었습니다.</p>
+  <div class="grid-3" style="flex:1;align-content:center">
+    <div class="card"><div class="ic">🗂️</div><h3>흩어진 정보</h3><p>메일·문서·메신저에 분산되어 필요한 내용을 찾는 데 시간이 걸림</p></div>
+    <div class="card"><div class="ic">🔁</div><h3>반복되는 문의</h3><p>비슷한 질문이 계속 들어와 담당자의 응대 부담이 누적됨</p></div>
+    <div class="card"><div class="ic">📄</div><h3>텍스트 위주 자료</h3><p>내 상황에 맞는 항목을 빠르게 찾기 어려운 문서 형태</p></div>
+  </div>
+  <div class="section-index">01</div>
+  <div class="foot"><span class="mono">WHY</span><span class="mono">03</span></div>
+</section>
+
+<!-- 4. GOAL -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">01</span> 제작 목적</div>
+  <h2 class="slide-h">목표는 세 가지였습니다</h2>
+  <div class="steps-v" style="flex:1;justify-content:center;max-width:60ch">
+    <div class="step-v"><div class="n">01</div><div class="b"><h4>한 곳에서 확인</h4><p>예산·부서경비 주요 기준을 한 페이지에서 볼 수 있게</p></div></div>
+    <div class="step-v"><div class="n">02</div><div class="b"><h4>FAQ로 반복 문의 줄이기</h4><p>자주 묻는 질문을 정리해 응대 부담과 처리 시간을 줄이기</p></div></div>
+    <div class="step-v"><div class="n">03</div><div class="b"><h4>문서를 웹페이지로</h4><p>딱딱한 문서형 가이드를 직관적이고 탐색하기 쉬운 형태로 전환</p></div></div>
+  </div>
+  <div class="section-index">01</div>
+  <div class="foot"><span class="mono">GOAL</span><span class="mono">04</span></div>
+</section>
+
+<!-- 5. RESULT PREVIEW -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">02</span> 결과물 미리보기</div>
+  <h2 class="slide-h">이렇게 만들어졌습니다</h2>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center">
+    <div class="browser" style="max-width:760px">
+      <div class="browser-bar">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="browser-url">internal-guide / 부서예산 Guide</span>
+      </div>
+      <div class="browser-body">
+        <div class="mock-side">
+          <div class="mock-logo">CJ ENM<b>부서예산 Guide</b></div>
+          <div class="mock-nav">
+            <span class="on">🏠 홈</span>
+            <span>📋 예산 조정 신청</span>
+            <span>📊 예산 현황 조회</span>
+            <span>💬 자주 묻는 질문</span>
+            <span>🏢 코스트센터 조회</span>
+          </div>
+        </div>
+        <div class="mock-main">
+          <h5>부서예산 Guide</h5>
+          <div class="sub">예산 조정 신청 · 조회 등 주요 절차 및 유의사항 정리</div>
+          <div class="mock-cards">
+            <div class="mock-c"><div class="ci">📋</div><div class="ct">예산 조정 신청</div><div class="cp">품의 → BizOne</div></div>
+            <div class="mock-c"><div class="ci">📊</div><div class="ct">예산 현황 조회</div><div class="cp">잔액·조정 내역 확인</div></div>
+            <div class="mock-c"><div class="ci">💬</div><div class="ct">자주 묻는 질문</div><div class="cp">FAQ 모음</div></div>
+            <div class="mock-c"><div class="ci">🏢</div><div class="ct">코스트센터 조회</div><div class="cp">조직별 고유 코드</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="mono">WHAT — 사이드바 · 카드형 홈 · FAQ · 시스템 화면 체험</span><span class="mono">05</span></div>
+</section>
+
+<!-- 6. RESULT FEATURES -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">02</span> 결과물 구성</div>
+  <h2 class="slide-h">단순 문서가 아니라 <span class="hl">홈페이지처럼</span></h2>
+  <div class="grid-4" style="flex:1;align-content:center">
+    <div class="card"><div class="ic">🧭</div><h3 style="font-size:15px">메뉴 네비게이션</h3><p>상황별 카테고리로 구분된 사이드바</p></div>
+    <div class="card"><div class="ic">🃏</div><h3 style="font-size:15px">카드형 FAQ</h3><p>키워드별로 분류된 펼침형 질문·답변</p></div>
+    <div class="card"><div class="ic">🔀</div><h3 style="font-size:15px">결재선 플로우</h3><p>처리 경로·결재선을 시각적으로 정리</p></div>
+    <div class="card"><div class="ic">🖥️</div><h3 style="font-size:15px">시스템 화면 체험</h3><p>BizOne 입력 화면을 그대로 재현</p></div>
+  </div>
+  <p class="lead" style="margin-top:1.4rem;font-size:clamp(13px,1.2vw,16px)">
+    "어떤 상황에서 / 어떻게 처리해야 하는지"를 중심으로,
+    규정 나열이 아닌 <b>실무 흐름</b>에 맞춰 구성했습니다.</p>
+  <div class="foot"><span class="mono">WHAT</span><span class="mono">06</span></div>
+</section>
+
+<!-- 7. PROCESS overview -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">03</span> 제작 프로세스</div>
+  <h2 class="slide-h">5단계로 진행했습니다</h2>
+  <div style="flex:1;display:flex;align-items:center">
+    <div class="flow-h">
+      <div class="flow-step"><div class="fn">STEP 1</div><h4>자료 수집</h4><p>기존 안내 자료 + 메신저 질의응답 모으기</p></div>
+      <div class="flow-step"><div class="fn">STEP 2</div><h4>FAQ 정리</h4><p>중복 통합, 사용자 언어로 재작성</p></div>
+      <div class="flow-step"><div class="fn">STEP 3</div><h4>구조 설계</h4><p>핵심을 상단에, 카테고리로 위계화</p></div>
+      <div class="flow-step"><div class="fn">STEP 4</div><h4>Claude로 제작</h4><p>HTML 페이지 생성 및 반복 수정</p></div>
+      <div class="flow-step"><div class="fn">STEP 5</div><h4>검수·보완</h4><p>민감 정보 점검, 배포 방식 검토</p></div>
+    </div>
+  </div>
+  <div class="section-index">03</div>
+  <div class="foot"><span class="mono">HOW</span><span class="mono">07</span></div>
+</section>
+
+<!-- 8. PROCESS detail: FAQ structure -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">03</span> 답변 정리 원칙</div>
+  <h2 class="slide-h">답변은 <span class="hl">읽는 순서</span>대로</h2>
+  <div class="two-col" style="margin-top:1rem">
+    <div class="stack">
+      <div class="steps-v">
+        <div class="step-v"><div class="n" style="background:var(--accent)">1</div><div class="b"><h4>결론 먼저</h4><p>"되는지 / 안 되는지"부터 명확하게</p></div></div>
+        <div class="step-v"><div class="n" style="background:var(--ink)">2</div><div class="b"><h4>처리 방법</h4><p>어디서, 어떤 순서로 진행하는지</p></div></div>
+        <div class="step-v"><div class="n" style="background:var(--teal)">3</div><div class="b"><h4>유의사항</h4><p>놓치기 쉬운 예외와 주의점</p></div></div>
+      </div>
+    </div>
+    <div class="stack">
+      <div class="card">
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem">
+          <span class="tag">예산</span><span class="tag teal">정산</span>
+          <span class="tag amber">법인카드</span><span class="tag red">출장일비</span>
+          <span class="tag">AI 툴비</span>
+        </div>
+        <h3 style="margin-bottom:.5rem">키워드별 분류</h3>
+        <p>업무 상황별로 묶어, 사용자가 자기 상황에 맞는 항목을 바로 찾도록 했습니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="mono">HOW</span><span class="mono">08</span></div>
+</section>
+
+<!-- 9. CLAUDE USAGE - the core -->
+<section class="slide" style="background:var(--ink);color:var(--paper);background-image:none">
+  <div class="kicker" style="color:var(--accent2)"><span class="eyebrow-num" style="color:rgba(244,241,232,.5)">04</span> 핵심 — Claude 활용</div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+    <h2 class="slide-h" style="color:var(--paper)">Claude를 <span style="color:var(--accent2)">어떻게</span> 활용했나</h2>
+    <p class="lead" style="color:rgba(244,241,232,.75);margin-top:.6rem">
+      네 가지 방식으로 썼습니다. 핵심은 <b style="color:var(--paper)">"코딩"이 아니라 "대화"</b>로 만들었다는 점입니다.</p>
+  </div>
+  <div class="section-index" style="color:rgba(244,241,232,.06)">04</div>
+  <div class="foot" style="border-color:rgba(255,255,255,.15)"><span class="mono" style="color:rgba(255,255,255,.5)">THE CORE</span><span class="mono" style="color:rgba(255,255,255,.5)">09</span></div>
+</section>
+
+<!-- 10. CLAUDE 4 points -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">04</span> AI 활용 포인트</div>
+  <h2 class="slide-h">네 가지 활용 방식</h2>
+  <div class="grid-2" style="flex:1;align-content:center;gap:1.1rem">
+    <div class="card"><h3><span class="ic">🧩</span>1. 흩어진 자료의 구조화</h3><p>문서·메신저 답변·FAQ 초안을 하나의 체계로 재정리. 유사 질문을 통합하고 분류 기준을 잡는 데 활용했습니다.</p></div>
+    <div class="card"><h3><span class="ic">✍️</span>2. 실무형 문장으로 재작성</h3><p>메신저식 답변을 전사 배포용 문장으로 정제. 보는 사람이 바로 이해할 수 있도록 명확하고 간결하게.</p></div>
+    <div class="card"><h3><span class="ic">🖼️</span>3. 웹페이지 초안 제작</h3><p>개발 지식 없이 HTML 초안을 빠르게 생성. 레이아웃·FAQ 카드·카테고리 구조 등 시각 구성까지 함께.</p></div>
+    <div class="card"><h3><span class="ic">🔧</span>4. 반복 수정·고도화</h3><p>실제 업무 맥락에 맞춰 문구와 구조를 반복 개선. 자연어 피드백만으로 결과물을 다듬었습니다.</p></div>
+  </div>
+  <div class="foot"><span class="mono">HOW WE USED CLAUDE</span><span class="mono">10</span></div>
+</section>
+
+<!-- 11. The natural-language feedback -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">04</span> 일하는 방식</div>
+  <h2 class="slide-h">이렇게 <span class="hl">말로 지시</span>했습니다</h2>
+  <p class="lead" style="margin-bottom:1.8rem">전문 용어 없이, 원하는 방향을 자연어로 요청하며 결과물을 다듬었습니다.</p>
+  <div class="chip-flow" style="flex:1;align-content:center">
+    <div class="fb-chip"><span class="arr">›</span>"사용자가 보기 쉽게"</div>
+    <div class="fb-chip"><span class="arr">›</span>"사내 가이드 톤으로"</div>
+    <div class="fb-chip"><span class="arr">›</span>"FAQ 중심으로 재구성"</div>
+    <div class="fb-chip"><span class="arr">›</span>"더 정형적으로"</div>
+    <div class="fb-chip"><span class="arr">›</span>"더 쉽게"</div>
+    <div class="fb-chip"><span class="arr">›</span>"분류를 추가해서"</div>
+    <div class="fb-chip"><span class="arr">›</span>"전사 배포용 톤으로"</div>
+  </div>
+  <div class="card" style="background:var(--plum-soft);border-color:#cec9f0;margin-top:.5rem">
+    <p style="color:var(--plum-ink);font-size:clamp(13px,1.2vw,16px)"><b>포인트</b> — 초안을 빠르게 받고, 대화로 방향을 고쳐가는 흐름이 "문서 작성 보조"를 넘어선 부분입니다.</p>
+  </div>
+  <div class="foot"><span class="mono">PROMPTING</span><span class="mono">11</span></div>
+</section>
+
+<!-- 12. DEPLOY -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">05</span> 배포 방식 검토</div>
+  <h2 class="slide-h">편리함보다 <span class="hl">보안</span>을 먼저</h2>
+  <div class="ba" style="flex:1;align-content:center">
+    <div class="ba-card before">
+      <div class="lbl">검토했으나 보류</div>
+      <ul>
+        <li>GitHub Pages — 서버 없이 배포 가능</li>
+        <li>하지만 공개 링크 구조 → 내부 자료엔 리스크</li>
+        <li>메일 직접 첨부 — 버전·유출 관리 어려움</li>
+      </ul>
+    </div>
+    <div class="ba-arrow">→</div>
+    <div class="ba-card after">
+      <div class="lbl">채택 방향</div>
+      <ul>
+        <li>OneDrive / SharePoint 업로드 후 링크 공유</li>
+        <li>권한: 조직 내 사용자 · 보기 전용</li>
+        <li>상단에 "사내 참고용 / 외부 공유 금지" 명시</li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span class="mono">DEPLOY — 사내 인증 기반 공유 중심</span><span class="mono">12</span></div>
+</section>
+
+<!-- 13. SECURITY CHECK -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">05</span> 검수 포인트</div>
+  <h2 class="slide-h">민감 정보는 따로 점검했습니다</h2>
+  <div class="grid-2" style="flex:1;align-content:center;gap:1.1rem">
+    <div class="card"><h3><span class="ic">🔍</span>노출 점검 항목</h3><p>내부 시스템명, 담당자 실명, 코스트센터 코드, 결재선 등이 외부에 드러나도 되는지 확인</p></div>
+    <div class="card"><h3><span class="ic">👤</span>역할 중심 표현</h3><p>실명·조직 코드 등은 가능한 역할 중심 표현으로 전환하는 방향으로 정비</p></div>
+    <div class="card"><h3><span class="ic">🔐</span>채널 제한</h3><p>외부 공개 가능성이 있는 배포 방식은 사내 인증 기반 플랫폼으로 제한</p></div>
+    <div class="card"><h3><span class="ic">📌</span>안내 문구 삽입</h3><p>"최신 기준 확인 필요" 등 자료 성격을 명시하는 문구를 상단에 배치</p></div>
+  </div>
+  <div class="foot"><span class="mono">REVIEW</span><span class="mono">13</span></div>
+</section>
+
+<!-- 14. IMPACT metrics -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">06</span> 기대 효과</div>
+  <h2 class="slide-h">그래서 무엇이 좋아졌나</h2>
+  <div class="metric-row" style="flex:1;align-content:center">
+    <div class="metric"><div class="v">↓</div><div class="l"><b>반복 문의 감소</b><br>자주 묻는 질문을 한 곳에서 해결</div></div>
+    <div class="metric" style="border-color:var(--plum)"><div class="v" style="color:var(--plum)">↑</div><div class="l"><b>처리 속도 향상</b><br>조회·정산·품의 방법을 빠르게 확인</div></div>
+    <div class="metric" style="border-color:var(--teal)"><div class="v" style="color:var(--teal)">=</div><div class="l"><b>안내 품질 표준화</b><br>담당자별 편차 없이 일관된 기준</div></div>
+    <div class="metric" style="border-color:var(--accent2)"><div class="v" style="color:#a07c10">+</div><div class="l"><b>AI 활용 확산</b><br>비개발자의 웹페이지 제작 사례</div></div>
+  </div>
+  <div class="section-index">06</div>
+  <div class="foot"><span class="mono">IMPACT</span><span class="mono">14</span></div>
+</section>
+
+<!-- 15. FUTURE -->
+<section class="slide">
+  <div class="kicker"><span class="eyebrow-num">07</span> 향후 개선 방향</div>
+  <h2 class="slide-h">여기서 더 나아간다면</h2>
+  <div class="grid-2" style="flex:1;align-content:center;gap:1.1rem">
+    <div class="card"><h3><span class="ic">🔄</span>최신 기준 반영</h3><p>재무·인사·구매 정책 변경 시 FAQ를 주기적으로 업데이트하는 관리 체계</p></div>
+    <div class="card"><h3><span class="ic">🛡️</span>보안 기준 정비</h3><p>민감 정보는 역할 중심 표현으로, 배포는 사내 인증 기반 플랫폼으로 제한</p></div>
+    <div class="card"><h3><span class="ic">🔎</span>검색·사용성 개선</h3><p>키워드 검색·카테고리 필터·즐겨찾기, 문의 빈도 기반 우선순위 조정</p></div>
+    <div class="card"><h3><span class="ic">🌱</span>다른 영역으로 확장</h3><p>계약·구매·정산·온보딩·시스템 사용법 등 반복 문의 영역에 동일 방식 적용</p></div>
+  </div>
+  <div class="foot"><span class="mono">NEXT</span><span class="mono">15</span></div>
+</section>
+
+<!-- 16. CLOSING -->
+<section class="slide" style="background:var(--ink);color:var(--paper);background-image:none">
+  <div class="kicker" style="color:var(--accent2)">마치며</div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
+    <h1 class="title" style="color:var(--paper);font-size:clamp(2rem,5vw,4.6rem)">
+      "문서 작성 보조"를 넘어,<br><span style="color:var(--accent2)">실제 업무 도구</span>가 됐습니다</h1>
+    <p class="lead" style="color:rgba(244,241,232,.75);margin-top:1.8rem">
+      비개발자도 AI와 대화하는 것만으로 업무용 웹페이지를 만들 수 있다 —<br>이번 사례가 그 가능성을 확인해 주었습니다.</p>
+    <div style="margin-top:2.4rem"><span class="brandtag" style="border-color:var(--paper);color:var(--paper)">감사합니다 · Q & A</span></div>
+  </div>
+  <div class="foot" style="border-color:rgba(255,255,255,.15)"><span class="mono" style="color:rgba(255,255,255,.5)">AI SEMINAR / 2026</span><span class="mono" style="color:rgba(255,255,255,.5)">16</span></div>
+</section>
+
+</div>
+
+<div class="hint">← → 또는 스페이스로 이동 · F 전체화면</div>
+<div class="ctrl">
+  <button onclick="move(-1)" aria-label="이전">‹</button>
+  <button onclick="move(1)" aria-label="다음">›</button>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;
+function show(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+  document.getElementById('prog').style.width=((i+1)/slides.length*100)+'%';
+}
+function move(d){show(i+d)}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();move(1)}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();move(-1)}
+  else if(e.key==='Home'){show(0)}
+  else if(e.key==='End'){show(slides.length-1)}
+  else if(e.key==='f'||e.key==='F'){
+    if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+let sx=0;
+document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)>50)move(dx<0?1:-1);
+},{passive:true});
+show(0);
+</script>
+</body>
+</html>
