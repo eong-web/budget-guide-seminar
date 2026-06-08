@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>IP사업본부(예능사업群) 부서예산 Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f8f7f4;--surface:#fff;--surface2:#f1f0ec;
+  --border:#e2e0d8;--border2:#ccc9be;
+  --text:#1a1917;--text2:#6b6860;--text3:#9b9890;
+  --accent:#5c3fc4;--accent-bg:#ede9fb;--accent-text:#3d2a8a;
+  --warn-bg:#fff8e6;--warn-border:#f0d060;--warn-text:#7a5a00;
+  --danger-bg:#fff0f0;--danger-border:#e05050;--danger-text:#8a2020;
+  --info-bg:#e8f4ff;--info-border:#90c8f0;--info-text:#1a5a8a;
+  --success-bg:#e8f7ee;--success-text:#1a6a3a;
+  --radius:10px;--radius-sm:6px;
+  --mono:'JetBrains Mono',monospace;
+  --bz-header:#1a3a6b;--bz-nav:#2a4a8b;--bz-blue:#4a7ac8;
+  --bz-row:#dce6f4;--bz-row2:#eef3fb;--bz-border:#b0c4de;
+  --bz-red:#c0392b;--bz-btn-blue:#3a6abf;--bz-btn-green:#2e7d32;
+  --bz-btn-save:#e65100;--bz-btn-submit:#1565c0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:230px;background:var(--surface);border-right:1px solid var(--border);padding:1.5rem 1rem;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar-logo{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.sidebar-logo strong{display:block;font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.01em;margin-top:3px;line-height:1.4}
+.sidebar-logo span{display:block;font-size:11px;color:var(--text3);margin-top:4px}
+.sidebar-logo .cj-badge{display:inline-block;font-size:10px;font-weight:700;color:var(--accent-text);letter-spacing:.04em;margin-bottom:4px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text2);transition:all .15s;margin-bottom:2px;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--accent-bg);color:var(--accent-text);font-weight:500}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--text3);text-transform:uppercase;padding:12px 10px 4px;margin-top:4px}
+.main{flex:1;padding:2.5rem 2rem;max-width:900px}
+.page{display:none}.page.active{display:block}
+h1{font-size:22px;font-weight:700;margin-bottom:.3rem;letter-spacing:-.02em;line-height:1.3}
+.page-note{font-size:12px;color:var(--text3);margin-top:.3rem}
+.page-sub{font-size:13px;color:var(--text2);margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);margin-top:.4rem}
+h2{font-size:15px;font-weight:700;margin:2rem 0 .75rem;letter-spacing:-.01em}
+h2:first-of-type{margin-top:0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:.75rem}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem;margin-bottom:2rem}
+.home-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;cursor:pointer;transition:all .15s}
+.home-card:hover{border-color:var(--border2);transform:translateY(-1px)}
+.home-card-icon{font-size:22px;margin-bottom:.75rem}
+.home-card h3{font-size:13px;font-weight:700;margin-bottom:.25rem}
+.home-card p{font-size:12px;color:var(--text2)}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;display:flex;align-items:center;gap:.75rem}
+.contact-avatar{width:38px;height:38px;border-radius:50%;background:var(--accent-bg);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--accent-text);flex-shrink:0}
+.contact-info{font-size:13px}
+.contact-info strong{display:block;font-weight:500}
+.contact-info span{color:var(--text2)}
+.steps{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.5rem}
+.step{display:flex;gap:.75rem;align-items:flex-start}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--accent-bg);color:var(--accent-text);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px}
+.step-body h4{font-size:13px;font-weight:700;margin-bottom:.2rem}
+.step-body p{font-size:13px;color:var(--text2);line-height:1.55}
+.step-body strong{color:var(--text);font-weight:500}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;margin-top:.4rem;font-weight:500}
+.badge-info{background:var(--info-bg);color:var(--info-text)}
+.flow-wrap{background:var(--surface2);border-radius:var(--radius);padding:1rem 1.25rem;margin:.75rem 0}
+.flow-row{display:flex;align-items:flex-end;gap:.5rem;flex-wrap:wrap}
+.flow-col{display:flex;flex-direction:column;align-items:center;gap:.3rem}
+.flow-label{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--accent-text);background:var(--accent-bg);padding:2px 8px;border-radius:20px}
+.flow-label-empty{font-size:10px;color:transparent;padding:2px 8px}
+.flow-node{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.5rem .9rem;font-size:12px;text-align:center;line-height:1.4}
+.flow-node small{display:block;font-size:10px;color:var(--text3);margin-top:1px}
+.flow-arr{color:var(--text3);font-size:16px;padding-bottom:6px}
+.notes-grid{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1rem}
+.note-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;display:flex;gap:.85rem;align-items:flex-start}
+.note-icon{font-size:18px;flex-shrink:0;line-height:1}
+.note-body h4{font-size:13px;font-weight:700;margin-bottom:.3rem;color:var(--text)}
+.note-body p{font-size:13px;color:var(--text2);line-height:1.6}
+.note-body ul{font-size:13px;color:var(--text2);line-height:1.6;padding-left:1rem;margin-top:.3rem}
+.note-body li{margin-bottom:.15rem}
+.note-card.danger{border-left:3px solid var(--danger-border)}
+.note-card.warn{border-left:3px solid var(--warn-border)}
+.note-card.info{border-left:3px solid var(--info-border)}
+.alert{border-radius:var(--radius-sm);padding:.85rem 1rem;font-size:13px;margin-bottom:.6rem;display:flex;gap:.6rem;align-items:center;line-height:1.55;border:1px solid}
+.alert-info{background:var(--info-bg);border-color:var(--info-border);color:var(--info-text)}
+.alert-icon{flex-shrink:0;font-size:15px;margin-top:1px}
+.faq-item{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:.5rem}
+.faq-q{width:100%;text-align:left;padding:.9rem 1rem;font-size:13px;font-weight:500;background:var(--surface);border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--text)}
+.faq-q:hover{background:var(--surface2)}
+.faq-chevron{transition:transform .2s;font-size:12px;color:var(--text3)}
+.faq-q.open .faq-chevron{transform:rotate(180deg)}
+.faq-a{display:none;padding:.75rem 1rem 1rem;font-size:13px;color:var(--text2);line-height:1.6;border-top:1px solid var(--border);background:var(--surface)}
+.faq-a.open{display:block}
+.faq-a ul{padding-left:1rem;margin-top:.3rem}
+.faq-a li{margin-bottom:.2rem}
+.chat-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.chat-header{padding:.75rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem;font-size:12px;color:var(--text2)}
+.chat-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;flex-shrink:0}
+.chat-msgs{padding:1rem;display:flex;flex-direction:column;gap:.75rem;min-height:120px}
+.msg{max-width:85%;padding:.65rem .9rem;border-radius:var(--radius);font-size:13px;line-height:1.6}
+.msg.bot{background:var(--surface2);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px}
+.msg.user{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;padding:.75rem 1rem;border-top:1px solid var(--border)}
+.chip{padding:4px 12px;border-radius:20px;border:1px solid var(--border);font-size:12px;background:var(--surface2);cursor:pointer;color:var(--text2);transition:all .15s}
+.chip:hover{border-color:var(--border2);color:var(--text)}
+.chat-input-row{display:flex;gap:.5rem;padding:.75rem 1rem;border-top:1px solid var(--border)}
+.chat-input{flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;background:var(--surface);color:var(--text);outline:none}
+.chat-input:focus{border-color:var(--accent)}
+.chat-btn{padding:8px 16px;border-radius:var(--radius-sm);border:none;background:var(--accent);color:#fff;font-size:13px;font-family:inherit;font-weight:500;cursor:pointer}
+.chat-btn:hover{opacity:.85}
+.srch-input{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;background:var(--surface);color:var(--text);outline:none;margin-bottom:.75rem}
+.srch-input:focus{border-color:var(--accent)}
+.tbl-wrap{overflow-x:auto}
+table.main-tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.main-tbl thead th{background:var(--surface2);padding:8px 12px;text-align:left;font-weight:500;border-bottom:1px solid var(--border);color:var(--text)}
+table.main-tbl tbody td{padding:7px 12px;border-bottom:1px solid var(--border);color:var(--text)}
+table.main-tbl tbody tr:last-child td{border-bottom:none}
+table.main-tbl tbody tr:hover td{background:var(--surface2)}
+.grp-hd td{font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;background:#e2dff5;color:#3d2a8a;padding:10px 12px 6px}
+.cctr-code{font-family:var(--mono);font-size:11px;background:var(--surface2);border:1px solid var(--border);padding:2px 6px;border-radius:4px;color:var(--accent-text)}
+.i1{padding-left:20px!important}.i2{padding-left:36px!important}.i3{padding-left:52px!important}
+.faq-search-box{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.25rem;margin-bottom:1rem}
+.faq-search-icon{font-size:28px;flex-shrink:0;line-height:1;margin-top:2px}
+.home-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--accent-text);background:var(--accent-bg);border:1px solid var(--accent-text);border-radius:var(--radius-sm);padding:6px 14px;cursor:pointer;margin-bottom:1.25rem;font-family:inherit;font-weight:500;transition:all .15s}
+.home-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.faq-layout{display:flex;gap:1.5rem;align-items:flex-start}
+.faq-cat-nav{width:140px;flex-shrink:0;position:sticky;top:1rem}
+.faq-cat-nav-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem}
+.faq-cat-nav-title{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin-bottom:.5rem;padding:0 4px}
+@keyframes faqHighlight{0%{background:#fffbe6;box-shadow:0 0 0 3px #ffe066;}60%{background:#fffbe6;box-shadow:0 0 0 3px #ffe066;}100%{background:transparent;box-shadow:none;}}
+.faq-item.highlight{animation:faqHighlight 1.5s ease forwards;border-radius:var(--radius)}
+.faq-item.highlight-persist{border:2px solid #ffe066 !important;border-radius:var(--radius);background:#fffbe6 !important;}
+.faq-cat-btn{display:block;width:100%;text-align:left;padding:5px 8px;border:none;background:none;font-size:12px;color:var(--text2);cursor:pointer;border-radius:var(--radius-sm);font-family:inherit;transition:all .15s}
+.faq-cat-btn:hover{background:var(--surface2);color:var(--text)}
+.faq-cat-btn.active{background:var(--accent-bg);color:var(--accent);font-weight:600}
+.faq-main{flex:1;min-width:0}
+@media(max-width:680px){.faq-layout{flex-direction:column}.faq-cat-nav{width:100%;position:static}.faq-cat-nav-inner{display:flex;flex-wrap:wrap;gap:4px;padding:.5rem}.faq-cat-btn{width:auto;padding:4px 10px;border:1px solid var(--border);border-radius:20px}}
+.step-section{margin-bottom:1.5rem}
+.step-section-label{display:inline-block;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(135deg,#5c3fc4,#7c5ce4);padding:6px 16px;border-radius:var(--radius-sm);margin-bottom:.85rem;letter-spacing:.01em;box-shadow:0 2px 8px rgba(92,63,196,.25)}
+
+/* ===== BizOne Mock ===== */
+.bz-wrap{font-family:'Noto Sans KR',sans-serif;font-size:12px;background:#f0f4fa;border:1px solid var(--bz-border);border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem}
+.bz-topbar{background:var(--bz-header);color:#fff;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;font-size:11px}
+.bz-topbar-left{font-weight:700;font-size:13px;letter-spacing:.02em}
+.bz-topbar-right{font-size:11px;color:#b0c8f8}
+.bz-navbar{background:var(--bz-nav);display:flex;align-items:center;gap:0;overflow-x:auto;padding:0 8px}
+.bz-nav-item{color:#c8d8f8;font-size:11px;padding:7px 10px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent}
+.bz-nav-item.active{color:#fff;border-bottom-color:#7ab0ff}
+.bz-breadcrumb{background:#e8eef8;border-bottom:1px solid var(--bz-border);padding:4px 12px;font-size:11px;color:#4a6a9a;display:flex;align-items:center;gap:4px}
+.bz-breadcrumb span{color:#888}
+.bz-toolbar{background:#fff;border-bottom:1px solid var(--bz-border);padding:6px 12px;display:flex;align-items:center;justify-content:space-between}
+.bz-title{font-size:13px;font-weight:700;color:var(--bz-header);display:flex;align-items:center;gap:6px}
+.bz-help{font-size:11px;color:var(--bz-blue);cursor:pointer;text-decoration:underline}
+.bz-btns{display:flex;gap:4px}
+.bz-btn{padding:4px 12px;border:none;border-radius:3px;font-size:11px;font-family:inherit;cursor:pointer;font-weight:500;color:#fff}
+.bz-btn-search{background:var(--bz-btn-blue)}
+.bz-btn-new{background:#5a7abf}
+.bz-btn-save{background:var(--bz-btn-save)}
+.bz-btn-submit{background:var(--bz-btn-submit)}
+.bz-filter{background:#f8fafc;border-bottom:1px solid var(--bz-border);padding:8px 12px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.bz-filter-row{display:flex;align-items:center;gap:6px}
+.bz-filter-label{font-size:11px;color:#4a6a9a;white-space:nowrap;min-width:60px;font-weight:500}
+.bz-filter-label.req::before{content:'●';color:var(--bz-red);font-size:8px;margin-right:2px}
+.bz-input{border:1px solid var(--bz-border);border-radius:2px;padding:3px 6px;font-size:11px;font-family:inherit;background:#fff;color:var(--text);width:100%}
+.bz-select{border:1px solid var(--bz-border);border-radius:2px;padding:3px 6px;font-size:11px;font-family:inherit;background:#fff;color:var(--text);width:100%}
+.bz-section{padding:8px 12px 4px;border-bottom:1px solid var(--bz-border)}
+.bz-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.bz-section-title{font-size:12px;font-weight:700;color:var(--bz-header);display:flex;align-items:center;gap:4px}
+.bz-section-title::before{content:'●';font-size:8px}
+.bz-section-right{display:flex;align-items:center;gap:6px;font-size:11px;color:#666}
+.bz-add-btn{width:20px;height:20px;border-radius:50%;border:none;cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1}
+.bz-add-btn.blue{background:#3a6abf;color:#fff}
+.bz-add-btn.red{background:#c0392b;color:#fff}
+.bz-table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:4px}
+.bz-table th{background:var(--bz-row);padding:5px 6px;text-align:center;border:1px solid var(--bz-border);color:#1a3a6b;font-weight:500;white-space:nowrap}
+.bz-table td{padding:4px 6px;border:1px solid var(--bz-border);color:var(--text);background:#fff;vertical-align:middle}
+.bz-table tr.input-row td{background:#fafeff}
+.bz-table .req-cell{background:#fff8f8}
+.bz-input-cell{border:1px solid #90b4d8;border-radius:2px;padding:2px 5px;font-size:11px;font-family:inherit;width:100%;background:#fff;color:var(--text)}
+.bz-select-cell{border:1px solid #90b4d8;border-radius:2px;padding:2px 4px;font-size:11px;font-family:inherit;background:#fff;color:var(--text);width:100%}
+.bz-search-cell{display:flex;gap:2px}
+.bz-search-cell input{flex:1;border:1px solid #90b4d8;border-radius:2px;padding:2px 5px;font-size:11px;font-family:inherit}
+.bz-search-cell button{border:1px solid #90b4d8;background:#e8eef8;border-radius:2px;padding:2px 5px;font-size:10px;cursor:pointer;color:#1a3a6b}
+.bz-num{text-align:right}
+.bz-center{text-align:center}
+.bz-foot{background:#e8eef8;border-top:1px solid var(--bz-border);padding:5px 12px;display:flex;justify-content:flex-end;gap:16px;font-size:11px;font-weight:700;color:#1a3a6b}
+.bz-foot span{display:flex;gap:8px}
+.bz-row-icon{cursor:pointer;color:#5a7abf;font-size:12px}
+.hint-box{background:var(--info-bg);border:1px solid var(--info-border);border-radius:var(--radius-sm);padding:.75rem 1rem;font-size:12px;color:var(--info-text);margin-bottom:1rem;line-height:1.6}
+.hint-box ul{padding-left:1rem;margin-top:.3rem}
+.hint-box li{margin-bottom:.2rem}
+.tab-row{display:flex;gap:4px;margin-bottom:1rem;border-bottom:2px solid var(--border);padding-bottom:0}
+.tab-btn{padding:8px 16px;border:none;background:none;font-size:13px;font-family:inherit;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-2px;font-weight:500}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-content{display:none}.tab-content.active{display:block}
+@media(max-width:680px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;padding:1rem;overflow-x:auto}
+  .sidebar-logo{margin-bottom:.75rem;padding-bottom:.75rem}
+  .nav-section{display:none}
+  .nav-items-wrap{display:flex;gap:.25rem;overflow-x:auto}
+  .nav-item{white-space:nowrap;flex-shrink:0}
+  .main{padding:1.5rem 1rem}
+  .bz-filter{grid-template-columns:1fr}
+}
+/* ===== 인쇄용 스타일 ===== */
+.print-btn{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;display:flex;align-items:center;gap:6px;padding:10px 18px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:13px;font-family:inherit;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(92,63,196,.3);transition:all .15s}
+.print-btn:hover{background:#4a30a8;transform:translateY(-1px)}
+@media print{
+  .print-btn,.sidebar,.nav-item,.home-btn,.faq-cat-nav,.faq-search-box,.chips,.tab-row,.bz-btns,.bz-add-btn,.bz-navbar,.hint-box{display:none!important}
+  .layout{display:block!important}
+  .main{padding:0!important;max-width:100%!important}
+  .page{display:block!important;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:2px solid #e2e0d8;page-break-after:always}
+  .page:last-child{border-bottom:none;page-break-after:avoid}
+  .faq-layout{display:block!important}
+  .faq-main{width:100%!important}
+  .faq-a{display:block!important}
+  .faq-chevron{display:none}
+  .tab-content{display:block!important}
+  .bz-wrap{overflow:visible!important}
+  body{font-size:11px;background:#fff!important}
+  h1{font-size:18px}
+  .step-section-label{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .alert,.note-card,.flow-wrap{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<button class="print-btn" onclick="window.print()">🖨️ PDF로 저장</button>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="cj-badge">CJ ENM</span>
+      IP사업본부(예능사업群)
+      <strong>부서예산 Guide</strong>
+      <span>※ NS BU · 디지털신사업담당 · 콘텐츠마케팅담당 등</span>
+    </div>
+    <div class="nav-section">메뉴</div>
+    <div class="nav-items-wrap">
+      <button class="nav-item active" onclick="go('home',this)">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>홈
+      </button>
+      <button class="nav-item" onclick="go('apply',this)">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>예산 조정 신청
+      </button>
+      <button class="nav-item" onclick="go('check',this)">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>예산 현황 조회
+      </button>
+
+      <button class="nav-item" onclick="go('faq',this)">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>자주 묻는 질문
+      </button>
+      <button class="nav-item" onclick="go('cctr',this)">
+        <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>코스트센터 조회
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- 홈 -->
+    <div id="home" class="page active">
+      <h1>IP사업본부(예능사업群) 부서예산 Guide</h1>
+      <p class="page-note">※ Non-Scripted BU, 디지털신사업담당, 콘텐츠마케팅담당 등</p>
+      <p class="page-sub">예산 조정 신청 · 조회 등 주요 절차 및 유의사항 정리</p>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:1.5rem">📅 Last updated: 2026.06 기준</div>
+      <div class="home-grid">
+        <div class="home-card" onclick="go('apply',document.querySelectorAll('.nav-item')[1])"><div class="home-card-icon">📋</div><h3>예산 조정 신청</h3><p>품의 → BizOne</p></div>
+        <div class="home-card" onclick="go('check',document.querySelectorAll('.nav-item')[2])"><div class="home-card-icon">📊</div><h3>예산 현황 조회</h3><p>잔액 및 조정 내역 확인</p></div>
+        <div class="home-card" onclick="go('faq',document.querySelectorAll('.nav-item')[3])"><div class="home-card-icon">💬</div><h3>자주 묻는 질문</h3><p>FAQ 모음</p></div>
+        <div class="home-card" onclick="go('cctr',document.querySelectorAll('.nav-item')[4])"><div class="home-card-icon">🏢</div><h3>코스트센터 조회</h3><p>조직별 고유 코드</p></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-avatar">김</div>
+        <div class="contact-info"><strong>문의처 — IP)사업기획1팀 김예원님</strong><span>예산 조정 · 품의 관련 문의</span></div>
+      </div>
+    </div>
+
+    <!-- 예산 조정 신청 -->
+    <div id="apply" class="page">
+      <button class="home-btn" onclick="go('home',document.querySelector('.nav-item'))">← 홈으로</button>
+      <h1>예산 조정 신청</h1>
+      <p class="page-sub">사전 품의 진행 후 BizOne에서 예산조정신청을 완료하는 2단계 절차입니다.</p>
+      
+
+      <div class="step-section">
+        <div class="step-section-label">1단계 — 사전 World 품의 진행</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>품의서 작성</h4><p>예산 조정 사유 및 현황을 기재하여 품의를 진행합니다.<br><span style="font-size:11px;color:var(--text3)">※ 기존 예산, 현재 잔액, 조정 금액, 조정 후 예산 포함 필수</span></p>
+              <div style="margin-top:.75rem;background:var(--info-bg);border:1px solid var(--info-border);border-radius:var(--radius-sm);padding:.8rem 1rem;font-size:12px;line-height:1.8;color:var(--info-text)">
+                <div style="font-weight:700;margin-bottom:.4rem">ℹ️ 유의사항</div>
+                <div style="margin-bottom:.4rem"><strong>품의 후 BizOne 조정 신청 별도 진행 必</strong><br>예산 품의 작성만으로는 완료되지 않습니다. 품의 결재 후 BizOne 예산조정신청을 별도로 진행해야 합니다.</div>
+                <div><strong>재무 마감 이후 정산 건은 누락 품의 작성 必</strong><br>재무 마감 이후 정산 누락 발생 시 누락 품의 작성 후 별도 정산이 필요합니다.</div>
+              </div>
+            </div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body">
+            <h4>결재선</h4>
+            <div class="flow-wrap">
+              <div class="flow-row">
+                <div class="flow-col"><span class="flow-label" style="background:linear-gradient(135deg,#5c3fc4,#7c5ce4);color:#fff">조정</span><div class="flow-node">1차 상사<small>팀장/CP (부재 시 생략)</small></div></div>
+                <span class="flow-arr">›</span>
+                <div class="flow-col"><span class="flow-label" style="background:linear-gradient(135deg,#5c3fc4,#7c5ce4);color:#fff;opacity:.75">합의</span><div class="flow-node">사업관리팀 팀장<small>IP사업기획1팀장 장세영님</small></div></div>
+                <span class="flow-arr">›</span>
+                <div class="flow-col"><span class="flow-label">결재</span><div class="flow-node">2차 상사<small>담당/사업부장/EP</small></div></div>
+              </div>
+              <div style="margin-top:.75rem;font-size:12px;color:var(--text2);background:var(--warn-bg);border:1px solid var(--warn-border);border-radius:var(--radius-sm);padding:.65rem .9rem;line-height:1.7">
+                <strong style="color:var(--warn-text)">⚠️ 아래 경우는 IP)사업기획담당 정선화님 합의 지정</strong><br>
+                · 예산 추가 1천만원 이상<br>
+                · 지급수수료 전용 건 (금액 무관)
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <div class="step-section">
+        <div class="step-section-label">2단계 — BizOne 예산조정신청</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>BizOne 접속</h4><p>BizOne › 내메뉴 → 부서경비계획관리 › 부서예산 › 예산조정신청</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><h4>목록에서 + 버튼 클릭</h4><p>오른쪽 파란 <strong>+</strong> 버튼 클릭 → 행 추가 → <strong>조정유형</strong>(추가/전용/기간전용) 선택 → <strong>적요</strong>에 품의 제목 그대로 기재</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><h4>상세내역 + 버튼 클릭 후 입력</h4><p><strong>예산월</strong> 선택 · <strong>코스트센터 조회</strong> 부서명 검색 · <strong>계정</strong> 선택 · <strong>센터</strong>(소속 사업부/담당/EP) · <strong>적용값</strong>(+/-) · <strong>금액</strong> 입력 · <strong>예산조정사유</strong> 기재</p><span class="badge badge-info">전용 시: 예산 주는 달(−) / 받는 달(+) 행 각각 추가</span></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-body"><h4>파일 첨부 및 전자결재</h4><p>'파일첨부' 버튼으로 품의서 첨부 → 결재선 <strong>IP)사업기획1팀장 장세영님</strong> 지정 → <strong>전자결재</strong> 버튼 클릭</p></div></div>
+        </div>
+      </div>
+      <div class="alert alert-info" style="align-items:center;margin-bottom:.5rem"><span class="alert-icon" style="line-height:1;margin-top:0">ℹ️</span><span>부서 간 전용 시 예산 전용 부서(−)와 전용 받는 부서(+)를 모두 지정해야 합니다.</span></div>
+      <div class="alert alert-info" style="align-items:center;margin-bottom:1.5rem"><span class="alert-icon" style="line-height:1;margin-top:0">⏰</span><span>월말은 결재가 몰려 지연될 수 있습니다. <strong>5~7일 전 사전 신청</strong>을 권장합니다.</span></div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin-bottom:1.5rem"/>
+      <div class="step-section-label" style="margin-bottom:1rem">BizOne 화면 체험</div>
+
+      <div class="hint-box" style="margin-bottom:1rem"><strong>💡 이렇게 사용하세요</strong><ul><li>목록 파란 <strong>+</strong> 버튼으로 행 추가 → 조정유형·적요 입력</li><li>상세내역 파란 <strong>+</strong> 버튼으로 행 추가 → 각 항목 입력</li></ul></div>
+      <div class="bz-wrap">
+        <div class="bz-topbar"><span class="bz-topbar-left">Biz One</span><span class="bz-topbar-right">김하고잡이님 (2:59:03) &nbsp;|&nbsp; HELP</span></div>
+        <div class="bz-navbar"><div class="bz-nav-item active">내메뉴</div></div>
+        <div class="bz-breadcrumb">부서경비계획관리 <span>›</span> 부서예산 <span>›</span> <strong>예산조정신청</strong></div>
+        <div class="bz-toolbar">
+          <div class="bz-title">📋 예산조정신청 <span class="bz-help">도움말</span></div>
+          <div class="bz-btns">
+            <button class="bz-btn bz-btn-search">조회</button>
+            <button class="bz-btn bz-btn-new">신규</button>
+            <button class="bz-btn bz-btn-save">저장</button>
+            <button class="bz-btn bz-btn-submit" onclick="bzSubmit()">전자결재</button>
+          </div>
+        </div>
+        <div class="bz-filter">
+          <div class="bz-filter-row"><span class="bz-filter-label req">회계년도</span><input class="bz-input" value="2026" style="width:70px"/></div>
+          <div class="bz-filter-row"><span class="bz-filter-label req">회사코드</span><input class="bz-input" value="CJ ENM" readonly/></div>
+          <div class="bz-filter-row"><span class="bz-filter-label req">사업영역</span><input class="bz-input" value="미디어콘텐츠" readonly/></div>
+          <div class="bz-filter-row"><span class="bz-filter-label">코스트센터 조회</span><input class="bz-input" id="bzCostFilter" placeholder="검색..."/></div>
+          <div class="bz-filter-row"><span class="bz-filter-label">조정유형</span><select class="bz-select"><option>전체</option><option>추가</option><option>전용</option><option>기간전용</option></select></div>
+          <div class="bz-filter-row"><span class="bz-filter-label">문서상태</span><select class="bz-select"><option>전체</option><option>작성중</option><option>결재완료</option></select></div>
+        </div>
+        <div class="bz-section">
+          <div class="bz-section-header">
+            <span class="bz-section-title">예산조정신청 목록</span>
+            <div class="bz-section-right">첨부파일 <input class="bz-input" value="0" style="width:40px;text-align:center"/> &nbsp;<button class="bz-btn bz-btn-search" style="font-size:10px;padding:2px 8px">파일첨부</button><button class="bz-add-btn blue" onclick="bzAddRow()">+</button><button class="bz-add-btn red" onclick="bzRemoveRow()">−</button></div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="bz-table"><thead><tr><th style="width:30px">No.</th><th style="width:24px"></th><th style="width:24px"></th><th style="width:60px">회계년도</th><th style="width:80px">예산번호</th><th style="width:70px">조정유형</th><th style="width:90px">신청일자</th><th style="width:80px">신청자</th><th style="width:100px">소속코스트센터</th><th style="min-width:160px">적요</th><th style="width:70px">상태</th><th style="width:80px">전자결재<br>진행상태</th><th style="width:80px">조정신청<br>확정상태</th><th style="width:80px">승인일자</th><th style="width:80px">경관승인일자</th></tr></thead><tbody id="bzListBody"></tbody></table>
+          </div>
+        </div>
+        <div class="bz-section" style="padding-bottom:8px">
+          <div class="bz-section-header">
+            <span class="bz-section-title">예산조정신청 상세내역</span>
+            <div class="bz-section-right"><button class="bz-add-btn blue" onclick="bzAddDetail()">+</button><button class="bz-add-btn red" onclick="bzRemoveDetail()">−</button></div>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="bz-table"><thead><tr><th style="width:28px">No.</th><th style="width:24px"></th><th style="width:70px">예산월</th><th style="width:90px">사업영역</th><th style="width:90px">코스트센터 조회</th><th style="width:120px">코스트센터명</th><th style="width:80px">계정</th><th style="width:160px">계정과목명</th><th style="width:80px">센터</th><th style="width:70px">예산</th><th style="width:70px">실적</th><th style="width:70px">잔액</th><th style="width:60px">적용값</th><th style="width:80px">금액</th><th style="width:80px">조정후잔액</th><th style="min-width:140px">예산조정사유</th><th style="width:70px">예산계획<br>등록여부</th><th style="width:70px">예산잔액조회<br>성공여부</th></tr></thead><tbody id="bzDetailBody"></tbody></table>
+          </div>
+        </div>
+        <div class="bz-foot"><span>합계 &nbsp; 예산: <span id="bzTotalBudget">0</span> &nbsp; 실적: <span id="bzTotalActual">0</span> &nbsp; 잔액: <span id="bzTotalRemain">0</span> &nbsp; 금액: <span id="bzTotalAmount">0</span></span></div>
+      </div>
+    </div>
+
+    <!-- 현황 조회 -->
+    <div id="check" class="page">
+      <button class="home-btn" onclick="go('home',document.querySelector('.nav-item'))">← 홈으로</button>
+      <h1>예산 현황 조회</h1>
+      <p class="page-sub">예산 잔액 및 조정 내역 확인을 위한 조회 방법 안내</p>
+      
+
+      <div class="step-section">
+        <div class="step-section-label">예산 현황 조회 방법</div>
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-body"><h4>BizOne 접속</h4><p>BizOne › 내메뉴 → 부서경비계획관리 › 부서예산 › 기간별 예산대비실적조회</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-body"><h4>코스트센터 및 기간 입력</h4><p>코스트센터 코드 입력 후 조회할 기간(시작~종료)을 지정하여 조회 버튼 클릭</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-body"><h4>결과 확인</h4><p>총 예산, 추가·전용·기간전용 값, 실적총액, 잔액 확인 가능</p></div></div>
+        </div>
+      </div>
+      <div class="alert alert-info" style="align-items:center;margin-bottom:1.5rem"><span class="alert-icon" style="line-height:1;margin-top:0">ℹ️</span><span>코스트센터 코드는 <strong><a href="#" onclick="go('cctr',document.querySelectorAll('.nav-item')[4]);return false;" style="color:var(--accent);text-decoration:underline;cursor:pointer">코스트센터 조회 탭</a></strong>에서 확인하세요. 예: 사업기획1팀 → A0335</span></div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin-bottom:1.5rem"/>
+      <div class="step-section-label" style="margin-bottom:1rem">BizOne 화면 체험</div>
+
+      <div class="hint-box" style="margin-bottom:1rem"><strong>💡 이렇게 사용하세요</strong><ul><li>코스트센터 코드 입력 후 조회 버튼을 누르세요.</li><li>샘플 코드: A0335 / A0336 / A0710 / A0716</li><li>조회기간에 따라 월별 컬럼(기초예산, 추가, 전용, 실적, 잔액)이 자동으로 생성됩니다.</li></ul></div>
+      <div class="bz-wrap">
+        <div class="bz-topbar"><span class="bz-topbar-left">Biz One</span><span class="bz-topbar-right">김하고잡이님 (2:59:03) &nbsp;|&nbsp; HELP</span></div>
+        <div class="bz-navbar"><div class="bz-nav-item active">내메뉴</div></div>
+        <div class="bz-breadcrumb">부서경비계획관리 <span>›</span> 부서예산 <span>›</span> <strong>기간별 예산대비실적조회</strong></div>
+        <div class="bz-toolbar">
+          <div class="bz-title">📊 기간별 예산대비실적조회 <span class="bz-help">도움말</span></div>
+          <div class="bz-btns"><button class="bz-btn bz-btn-search" onclick="bzQueryCheck()">조회</button></div>
+        </div>
+        <div class="bz-filter" style="grid-template-columns:1fr 1fr 1fr 1fr">
+          <div class="bz-filter-row"><span class="bz-filter-label req">회계년도</span><input class="bz-input" value="2026" style="width:60px"/></div>
+          <div class="bz-filter-row"><span class="bz-filter-label req">회사코드</span><input class="bz-input" value="CJ ENM" readonly/></div>
+          <div class="bz-filter-row"><span class="bz-filter-label req">사업영역</span><input class="bz-input" value="미디어콘텐츠" readonly/></div>
+          <div class="bz-filter-row"><span class="bz-filter-label">조정유형</span><select class="bz-select"><option>전체</option><option>추가</option><option>전용</option><option>기간전용</option></select></div>
+          <div class="bz-filter-row" style="grid-column:span 2"><span class="bz-filter-label req">코스트센터 조회</span><div class="bz-search-cell" style="flex:1"><input class="bz-input" id="checkCostInput" placeholder="코드 입력 (예: A0335)"/><button onclick="bzQueryCheck()" style="border:1px solid #90b4d8;background:#e8eef8;border-radius:2px;padding:3px 8px;font-size:11px;cursor:pointer;color:#1a3a6b">조회</button></div></div>
+          <div class="bz-filter-row"><span class="bz-filter-label req">시작월</span><select class="bz-select" id="checkFromMonth"><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4" selected>4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select></div>
+          <div class="bz-filter-row"><span class="bz-filter-label req">종료월</span><select class="bz-select" id="checkToMonth"><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4" selected>4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select></div>
+        </div>
+        <div class="bz-section" style="padding-bottom:8px">
+          <div class="bz-section-header"><span class="bz-section-title">기간별 예산대비실적 목록</span></div>
+          <div style="overflow-x:auto">
+            <table class="bz-table" id="checkResultTable">
+              <thead id="checkHead"></thead>
+              <tbody id="checkResultBody"><tr><td colspan="20" style="text-align:center;color:#999;padding:20px">코스트센터 코드를 입력하고 조회 버튼을 눌러주세요.<br><span style="font-size:10px">예시: A0335, A0336, A0710, A0716</span></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="bz-foot"><span>합계 &nbsp; 총예산: <span id="checkTotalBudget">-</span> &nbsp; 실적총액: <span id="checkTotalActual">-</span> &nbsp; 잔액: <span id="checkTotalRemain">-</span></span></div>
+      </div>
+    </div>
+
+    <!-- 유의사항 -->
+    <div id="notes" class="page">
+      <button class="home-btn" onclick="go('home',document.querySelector('.nav-item'))">← 홈으로</button>
+      <h1>유의사항</h1>
+      <p class="page-sub">예산 조정 신청 시 반드시 확인해야 할 사항들입니다.</p>
+      
+
+      <div class="notes-grid">
+        <div class="note-card danger">
+          <div class="note-icon">🚫</div>
+          <div class="note-body">
+            <h4>분기 통제 — 분기 마감 이전 전용 必</h4>
+            <p>대부분의 예산은 분기 단위로 통제됩니다. 전용 희망 시 반드시 분기 마감 전 품의 상신이 필요합니다.</p>
+            <ul>
+              <li>예: 3분기 전용은 9/30 이전 신청</li>
+              <li>분기 경과 후 별도 조정 신청 없으면 자동 이월 불가 (1분기 예산 → 2분기 사용 불가)</li>
+              <li>계정과 기간 동시 전용 불가 (예: 2분기 회의비 → 3분기 소모품비)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note-card danger">
+          <div class="note-icon">📋</div>
+          <div class="note-body">
+            <h4>품의 후 BizOne 조정 신청 별도 진행 必</h4>
+            <p>예산 품의 작성만으로는 완료되지 않습니다. 품의 결재 후 BizOne 예산조정신청을 별도로 진행해야 합니다.</p>
+          </div>
+        </div>
+        <div class="note-card warn">
+          <div class="note-icon">⏰</div>
+          <div class="note-body">
+            <h4>말일 예산 조정 시, 결재 지연 주의</h4>
+            <p>월말은 결재가 몰려 지연될 수 있습니다. 5~7일 전 사전 신청을 권장합니다.</p>
+          </div>
+        </div>
+        <div class="note-card warn">
+          <div class="note-icon">📝</div>
+          <div class="note-body">
+            <h4>재무 마감 이후 정산 건은 누락 품의 작성 必</h4>
+            <p>재무 마감 이후 정산 누락 발생 시 누락 품의 작성 후 별도 정산이 필요합니다.</p>
+            <ul>
+              <li>법인카드 외 외부 업체 지급 건: 예외지급품의 작성 필수</li>
+              <li>추가/전용/누락/예외지급 동일 건은 단일 품의로 일괄 진행 가능</li>
+              <li>예외지급 및 누락 품의: 재무파트 합의 추가 필수 (합의: 재무운영팀장 정병환님)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ + AI -->
+    <div id="faq" class="page">
+      <button class="home-btn" onclick="go('home',document.querySelector('.nav-item'))">← 홈으로</button>
+      <h1>자주 묻는 질문</h1>
+      <p class="page-sub">키워드로 검색하거나 아래 목록에서 확인하세요.</p>
+      
+
+
+      <!-- 키워드 검색 -->
+      <div class="faq-search-box">
+        <div class="faq-search-icon">🤖</div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.4rem">궁금한 내용을 검색해 보세요</div>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="faqSearchInput" class="chat-input" placeholder="예: 유류대, 전용, 출장비, 회의비..." oninput="faqSearch()" style="flex:1"/>
+          </div>
+        </div>
+      </div>
+      <div id="faqSearchResult" style="display:none;margin-bottom:1.5rem"></div>
+      <div class="chips" style="border:none;padding:0;margin-bottom:1.5rem">
+        <span class="chip" onclick="faqChip('예산 이월')">예산 이월</span>
+        <span class="chip" onclick="faqChip('전용')">전용</span>
+        <span class="chip" onclick="faqChip('출장')">출장비</span>
+        <span class="chip" onclick="faqChip('회의비')">회의비</span>
+        <span class="chip" onclick="faqChip('IT자산')">IT자산</span>
+        <span class="chip" onclick="faqChip('법인카드')">법인카드</span>
+        <span class="chip" onclick="faqChip('제작비')">제작비</span>
+        <span class="chip" onclick="faqChip('멤버십')">멤버십</span>
+      </div>
+
+      <!-- FAQ 목록 + 카테고리 사이드 메뉴 -->
+      <div class="faq-layout">
+        <div class="faq-cat-nav">
+          <div class="faq-cat-nav-inner">
+            <div class="faq-cat-nav-title">카테고리</div>
+            <button class="faq-cat-btn active" onclick="scrollCat('cat-budget')">예산</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-transfer')">전용</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-settle')">정산/품의</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-card')">법인카드</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-it')">IT자산</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-produce')">제작비/경비</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-meeting')">회의비</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-drive')">대리운전</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-member')">멤버십</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-ai')">AI 툴비</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-oil')">유류비</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-night')">야간교통비</button>
+            <button class="faq-cat-btn" onclick="scrollCat('cat-travel')">출장일비</button>
+          </div>
+        </div>
+        <div class="faq-main" id="faqList">
+        <div id="cat-budget" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin-bottom:.6rem;scroll-margin-top:16px">예산</div>
+        <div class="faq-item" data-tags="분기통제 분기 통제 예산"><button class="faq-q" onclick="tf(this)">분기 통제가 무엇인가요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">예산 및 내부 통제를 분기마다 진행한다는 뜻입니다.</div></div>
+        <div class="faq-item" data-tags="예산 부서예산 조회 확인 BizOne"><button class="faq-q" onclick="tf(this)">부서 예산은 어디서 확인하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a"><strong>BizOne > 비용계획 > 부서예산 > 기간별 예산대비실적조회</strong>에서 확인하실 수 있습니다.</div></div>
+        <div class="faq-item" data-tags="예산 조회 정산 절차 권한 시스템"><button class="faq-q" onclick="tf(this)">부서예산 조회나 정산 전에 필요한 절차가 있나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">부서예산 조회 및 정산을 진행하려면 먼저 <strong>부서 권한</strong> 신청이 필요합니다. <strong>전자결재 > 시스템 사용 신청 > 시스템 권한 신청 > 부서 권한 요청</strong> 경로로 신청해 주세요.</div></div>
+        <div class="faq-item" data-tags="인원경비 부서경비 차이 경비"><button class="faq-q" onclick="tf(this)">인원경비와 부서경비는 어떻게 다른가요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">인원경비는 인원별로 부여되는 기초 예산으로, 회의비·소모품비·시내교통비·교육훈련비 등이 포함됩니다. 부서경비는 인원경비 외에 부서 운영상 추가로 필요한 비용을 처리하기 위한 예산입니다.</div></div>
+
+        <div id="cat-transfer" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">전용</div>
+        <div class="faq-item" data-tags="이월 전용 자동 분기"><button class="faq-q" onclick="tf(this)">예산 이월은 자동으로 되나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a"><strong>예산은 자동 이월되지 않습니다.</strong> 이월 또는 전용이 필요한 경우 별도 품의 결재 후 예산조정신청을 진행해야 하며, 담당 부서 승인 후 반영됩니다. 분기가 경과해도 다음 분기로 자동 전용되지 않으므로 반드시 <strong>별도 신청</strong>이 필요합니다.</div></div>
+        <div class="faq-item" data-tags="기간전용 전용 차이"><button class="faq-q" onclick="tf(this)">기간 전용과 전용의 차이가 뭔가요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">기간 전용은 계정은 동일하고 사용 기간만 변경할 때 사용합니다. 전용은 계정과 관계없이 예산을 다른 계정으로 이동할 때 사용합니다.</div></div>
+        <div id="cat-oil" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">유류비</div>
+        <div class="faq-item" data-tags="유류대 시내교통비 전용 조직장"><button class="faq-q" onclick="tf(this)">유류비는 시내교통비에서 바로 정산할 수 있나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">일반 직원의 유류비는 시내교통비에서 바로 정산할 수 없습니다. 유류비 정산이 필요한 경우 먼저 <strong>시내교통비에서 유류비 계정으로 전용 품의를 기안하고, 예산조정신청에서 전용 신청을 진행한 뒤 정산</strong>해 주세요.</div></div>
+        <div class="faq-item" data-tags="유류대 조직장 비조직장 전용"><button class="faq-q" onclick="tf(this)">조직장이 아니어도 유류대 처리가 가능한가요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">넵, 가능합니다. <strong>개인카드 결제 후 시내교통비 계정에서 예산 전용(전용 신청 전, 품의 기안 必)</strong> 후 유류대 정산 부탁드립니다.</div></div>
+
+        <div id="cat-settle" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">정산/품의</div>
+        <div class="faq-item" data-tags="당월 정산 품의 누락"><button class="faq-q" onclick="tf(this)">당월에 정산 못한 건은 무조건 품의를 써야 하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">당월 사용분은 당월 내 정산하는 것이 원칙입니다. 당월 내 정산하지 못한 건은 지연 사유와 처리 가능 여부를 확인한 뒤 필요한 절차에 따라 <strong>누락 품의 기안 후 정산</strong>해 주세요.</div></div>
+        <div class="faq-item" data-tags="임시전기 재무 정산 완료"><button class="faq-q" onclick="tf(this)">정산 완료했는데, 임시 전기 상태에서 다음으로 안 넘어가요 <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">임시 전기 상태는 <strong>재무 승인 대기 단계</strong>입니다. 처리가 지연되거나 긴급한 경우에는 재무팀 담당자(이현준님, 김창현님)께 진행상황 문의 부탁드립니다.</div></div>
+        <div class="faq-item" data-tags="부서경비 선급금 구분 처리"><button class="faq-q" onclick="tf(this)">부서경비 처리 건과 선급금은 어떻게 구분하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">부서경비로 처리하는 경우 해당 비용을 지급수수료 등 비용 계정으로 즉시 처리합니다. 선급금은 먼저 비용을 지급한 뒤, 해당 기획개발 건이 방영 또는 종영되는 시점에 원가 또는 비용으로 대체 처리하는 방식입니다. 처리 방식이 명확하지 않은 경우 <strong>사전에 사업관리/재무 담당자</strong>와 확인해 주세요.</div></div>
+        <div class="faq-item" data-tags="재무마감 누락 품의 재무팀 합의"><button class="faq-q" onclick="tf(this)">재무 마감이 지났는데 누락 품의를 써야 하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">재무 마감 이후 정산 누락 발생 시 <strong>누락 품의 작성 후 별도 정산</strong>이 필요합니다. 누락 품의 시, 재무팀 합의자 지정 부탁드립니다. (현 합의자: 재무운영팀장 정병환님)</div></div>
+        <div class="faq-item" data-tags="외부업체 예외지급 품의 재무팀 법인카드"><button class="faq-q" onclick="tf(this)">외부 업체에 지급해야 하는 건도 품의를 써야 하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">법인카드 외 외부 업체 지급 건은 <strong>예외지급 품의 작성이 필수</strong>입니다. 예외지급 품의 시, 재무팀 합의자 지정 부탁드립니다. (현 합의자: 재무운영팀장 정병환님)</div></div>
+
+        <div id="cat-card" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">법인카드</div>
+        <div class="faq-item" data-tags="법인카드 승인 취소 정산"><button class="faq-q" onclick="tf(this)">법인카드 정산 시 승인내역과 취소내역이 함께 있으면 어떻게 처리하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">법인카드는 승인내역별로 전표가 각각 생성됩니다. 승인금액과 취소금액이 함께 있는 경우에는 <strong>마이너스 금액, 즉 취소 내역부터 먼저 정산</strong>해 주세요.</div></div>
+
+        <div id="cat-it" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">IT자산</div>
+        <div class="faq-item" data-tags="IT자산 계정 100만원 자산 비용"><button class="faq-q" onclick="tf(this)">IT 자산은 어느 계정으로 처리해야 하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">업무용 IT 자산은 금액 기준에 따라 처리 방식이 달라집니다. <strong>100만 원 이상은 자산으로 처리하고, 100만 원 미만은 비용</strong>으로 처리(품의 必)해 주세요.</div></div>
+        <div class="faq-item" data-tags="IT자산 법인카드 결재선 구매"><button class="faq-q" onclick="tf(this)">법인카드로 IT 자산을 결제한 경우 결재선은 어떻게 설정하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">총무를 통한 구매 건은 총무 관련 합의가 필요할 수 있습니다. 법인카드로 직접 결제한 뒤 정산하는 건은 일반적으로 사업관리팀장 합의로 진행 가능합니다. 결재선은 기안: 현업 사용자, 조정: 부서장, 합의: 사업관리팀장, 결재: 현업 조직장을 기준으로 부탁드립니다.</div></div>
+
+        <div id="cat-produce" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">제작비/경비</div>
+        <div class="faq-item" data-tags="쏘카 배차 시내교통비 제작비 교통"><button class="faq-q" onclick="tf(this)">쏘카/배차 등을 사용하고, 시내교통비로 처리해도 되나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">프로그램 기획/제작을 위해 사용한 경우, <strong>제작비 처리</strong> 가능합니다.<br>그 외 건들은 재무 및 사업관리 내부 확인이 필요합니다.</div></div>
+        <div class="faq-item" data-tags="제작비 경비 부서경비 처리"><button class="faq-q" onclick="tf(this)">제작비 일부를 경비 처리해도 되나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a"><strong>제작비는 원가로 귀속되어야 하므로 부서경비로 처리할 수 없습니다.</strong> 다만 경비 성격의 비용인 경우에는 사전 품의를 통해 사업기획담당과 협의 후 처리해 주세요.</div></div>
+
+        <div id="cat-meeting" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">회의비</div>
+        <div class="faq-item" data-tags="회의비 계정 이벤트 타운홀"><button class="faq-q" onclick="tf(this)">회의비는 어떤 경우에 사용하는 계정인가요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">회의비는 업무 목적의 회의에 소요되는 비용을 처리하는 계정입니다. 회의 개최에 통상적으로 필요한 비용을 처리할 수 있으며, 타운홀 미팅 등 이벤트성 행사도 회의비로 처리할 수 있습니다.</div></div>
+
+        <div id="cat-drive" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">대리운전</div>
+        <div class="faq-item" data-tags="대리운전 계정 지급수수료 조직장"><button class="faq-q" onclick="tf(this)">대리운전 비용은 어느 계정으로 처리하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">대리운전 비용은 <strong>지급수수료-외주용역수수료 계정</strong>으로 처리합니다. 단, 조직장에 한해 처리 가능합니다.</div></div>
+
+        <div id="cat-member" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">멤버십</div>
+        <div class="faq-item" data-tags="멤버십 업그레이드 부서예산 연간"><button class="faq-q" onclick="tf(this)">멤버십 업그레이드 비용도 부서예산으로 처리할 수 있나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">기존 연간 멤버십을 업그레이드하면서 추가 결제되는 비용은, 해당 비용이 <strong>예산 계획 범위 내에 있다면 부서 예산으로 처리</strong>할 수 있습니다.</div></div>
+
+        <div id="cat-ai" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">AI 툴비</div>
+        <div class="faq-item" data-tags="AI 툴비 ChatGPT Claude Perplexity 계정 지급수수료 기타"><button class="faq-q" onclick="tf(this)">AI 툴비(ChatGPT, Claude, Perplexity 등)는 어느 계정으로 정산하면 되나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">특정 프로그램 기획/제작을 위해 사용된 AI 툴비의 경우, <strong>제작비 처리</strong> 부탁드립니다. (상세 내용 제작관리팀 문의)<br>그 외 부서경비 처리해야 하는 경우, 재무 가이드에 따라 <strong>지급수수료-기타</strong> 계정으로 처리해 주십시오.</div></div>
+        <div class="faq-item" data-tags="AI 툴 연간 결제 월별 안분"><button class="faq-q" onclick="tf(this)">AI 툴이 연간 결제되는 경우에는 어떻게 처리하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">AI 툴 이용료가 연간 단위로 결제되는 경우 전체 금액을 한 번에 비용 처리하지 않고, <strong>월별 안분 인식 기준</strong>으로 정산합니다.</div></div>
+
+        <div id="cat-night" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">야간교통비</div>
+        <div class="faq-item" data-tags="야간교통비 잔액 복지"><button class="faq-q" onclick="tf(this)">야간교통비 잔액은 어디서 보나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">야간교통비의 경우, 회사 복지 차원에서 진행하는 건이므로 따로 잔액을 설정해두고 있지 않습니다.</div></div>
+        <div class="faq-item" data-tags="야간교통비 잔액 없음 시내교통비 예산"><button class="faq-q" onclick="tf(this)">야간교통비 처리를 하려고 하는데, 잔액이 없다고 떠요! <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">야간교통비 상신 시, <strong>시내교통비 처리</strong>되는 건이 있는지 확인 부탁드립니다. 시내교통비의 경우 분기별로 잔액 관리를 하고 있으며, 잔액이 부족한 경우 <strong>예산 추가/전용</strong>이 필요합니다.</div></div>
+
+        <div id="cat-travel" style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text3);text-transform:uppercase;margin:.9rem 0 .6rem;scroll-margin-top:16px">출장일비</div>
+        <div class="faq-item" data-tags="출장일비 예산 부족 추가 신청"><button class="faq-q" onclick="tf(this)">출장일비를 부서경비로 처리해야 하는데 예산이 부족하면 어떻게 하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">부서예산이 부족한 경우 <strong>기안 완료된 출장 보고서를 기준으로 예산조정신청(추가)을 진행</strong>해 주세요. 예산 추가 반영 후 출장일비 정산을 진행하면 됩니다.</div></div>
+        <div class="faq-item" data-tags="출장일비 환율 신청금액 실제정산"><button class="faq-q" onclick="tf(this)">출장일비 신청 금액과 실제 정산 금액이 달라도 되나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">환율, 일정, 비자 이슈 등으로 신청 금액과 실제 정산 금액이 달라질 수 있습니다. BizOne에서는 현재 환율 기준으로 출장일비 신청이 가능하므로, 품의 당시 환율과 실제 정산 환율이 다른 경우 <strong>의견란 또는 결과 보고서에 변경 사유와 실제 정산할 금액을 기재</strong>하고 관련 증빙을 첨부해 주세요. 이미 출장보고서가 결재된 경우에는 누락 품의에 해당 내용 기입 부탁드립니다.</div></div>
+        <div class="faq-item" data-tags="출장일비 타조직 본부 비용 귀속"><button class="faq-q" onclick="tf(this)">타 조직 인력이 본부 프로그램 제작을 위해 투입된 경우 출장일비는 어디서 처리하나요? <span class="faq-chevron">▼</span></button>
+          <div class="faq-a">타 조직 인력이 본부 프로그램 제작을 위해 투입된 경우에도 해당 출장일비는 <strong>원칙적으로 소속 본부 비용</strong>으로 처리합니다. 비용 귀속이 불명확한 경우에는 관련 부서와 확인 후 진행해 주세요.</div></div>
+        </div><!-- faq-main -->
+      </div><!-- faq-layout -->
+
+      <div class="contact-card" style="margin-top:1.5rem">
+        <div class="contact-avatar">김</div>
+        <div class="contact-info"><strong>추가 문의 — IP)사업기획1팀 김예원님</strong><span>FAQ에 없는 내용은 직접 문의해 주세요.</span></div>
+      </div>
+
+    </div><!-- faq page -->
+
+    <!-- 코스트센터 -->
+    <div id="cctr" class="page">
+      <button class="home-btn" onclick="go('home',document.querySelector('.nav-item'))">← 홈으로</button>
+      <h1>코스트센터(팀 고유 코드)</h1>
+      <p class="page-sub">사업부와 팀을 혼동하지 않도록 확인 부탁드립니다.</p>
+      <input type="text" class="srch-input" id="srchInput" placeholder="조직명 또는 코스트센터 코드 검색..." oninput="filterCCTR()"/>
+      <div class="tbl-wrap">
+        <table class="main-tbl">
+          <thead><tr><th>조직명</th><th>코스트센터</th><th>코스트센터명</th></tr></thead>
+          <tbody id="cctrBody"></tbody>
+        </table>
+      </div>
+      <div class="alert alert-info" style="margin-top:1rem">
+        <span class="alert-icon">ℹ️</span>
+        <span>BizOne 조정 신청 시, <strong>IP)사업기획1팀장 장세영님</strong>으로 결재 지정 부탁드립니다.<br>결재 후 IP)사업기획1팀 정용락님 예산 승인에 따라 자동 반영됩니다.</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ===== 네비게이션 =====
+function go(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn)btn.classList.add('active');
+}
+function showTab(page,tabId,btn){
+  const p=document.getElementById(page);
+  p.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  p.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+function tf(btn){btn.nextElementSibling.classList.toggle('open');btn.classList.toggle('open');}
+
+// ===== 코스트센터 데이터 =====
+const D=[
+  {g:'IP사업본부'},
+  {o:'IP사업본부',c:'A0731',n:'IP)IP사업본부',i:0,m:'김지연'},
+  {o:'콘텐츠CA팀',c:'A0732',n:'IP)콘텐츠CA팀',i:2,m:'민선홍'},
+  {g:'사업기획담당'},
+  {o:'사업기획담당',c:'A0710',n:'IP)사업기획담당',i:1,m:'정선화'},
+  {o:'사업기획1팀',c:'A0335',n:'IP)사업기획1팀',i:2,m:'장세영'},
+  {o:'IP전략팀',c:'A0735',n:'IP)IP전략팀',i:2,m:'김소형'},
+  {o:'교육과정',c:'A0018',n:'IP)교육과정',i:2,m:''},
+  {g:'콘텐츠마케팅담당'},
+  {o:'콘텐츠마케팅담당',c:'A0173',n:'IP)콘텐츠마케팅담당',i:1,m:'강지훈'},
+  {o:'디지털인사이트팀',c:'A0723',n:'IP)디지털인사이트팀',i:2,m:'이상화'},
+  {o:'마케팅팀',c:'A0307',n:'IP)마케팅팀',i:2,m:'강지훈'},
+  {o:'브랜드디자인팀',c:'A0325',n:'IP)브랜드디자인팀',i:2,m:'박건욱'},
+  {g:'디지털신사업담당'},
+  {o:'디지털신사업담당',c:'A0722',n:'IP)디지털신사업담당',i:1,m:'유승만'},
+  {o:'디지털플랫폼사업팀',c:'A0382',n:'IP)디지털플랫폼사업팀',i:2,m:'손세경'},
+  {o:'디지털제작사업팀',c:'A0720',n:'IP)디지털제작사업팀',i:2,m:'최성환'},
+  {o:'인플루언서사업팀',c:'U0200',n:'IP)인플루언서사업팀',i:2,m:'이유진'},
+  {g:'Non-Scripted BU'},
+  {o:'Non-Scripted BU',c:'A0336',n:'IP)Non-Scripted BU',i:0,m:'김유곤'},
+  {o:'IP사업팀',c:'A0716',n:'NS)IP사업팀',i:2,m:'우지현'},
+  {o:'제작관리팀',c:'A0379',n:'NS)제작관리팀',i:2,m:'김정은'},
+  {o:'글로벌예능전담팀',c:'A0718',n:'NS)글로벌예능전담팀',i:2,m:'박희연'},
+  {o:'제작운영팀',c:'A0227',n:'NS)제작운영팀',i:2,m:'박성용'},
+  {g:'예능제작EP'},
+  {o:'예능제작1EP',c:'A0385',n:'NS)예능제작1EP',i:1,m:'양정우'},
+  {o:'예능제작2EP',c:'A0095',n:'NS)예능제작2EP',i:1,m:'이우형'},
+  {g:'예능제작1사업부'},
+  {o:'예능제작1사업부',c:'A0088',n:'NS)예능제작1사업부',i:1,m:'이원형'},
+  {o:'기획제작1CP',c:'A0388',n:'NS)기획제작1CP',i:2,m:'강궁'},
+  {o:'기획제작2CP',c:'A0265',n:'NS)기획제작2CP',i:2,m:'류호진'},
+  {o:'Sports프로젝트',c:'A0719',n:'NS)Sports프로젝트',i:3,m:''},
+  {o:'기획제작3CP',c:'A0322',n:'NS)기획제작3CP',i:2,m:'정민식'},
+  {o:'시사교양프로젝트',c:'A0389',n:'NS)시사교양프로젝트',i:3,m:''},
+  {o:'기획제작4CP',c:'A0327',n:'NS)기획제작4CP',i:2,m:'전성호'},
+  {o:'기획제작5CP',c:'A0365',n:'NS)기획제작5CP',i:2,m:'이원형'},
+  {o:'라이프스타일프로젝트',c:'A0721',n:'NS)라이프스타일프로젝트',i:3,m:''},
+  {g:'예능제작2사업부'},
+  {o:'예능제작2사업부',c:'A0093',n:'NS)예능제작2사업부',i:1,m:'박희연'},
+  {o:'기획제작6CP',c:'A0367',n:'NS)기획제작6CP',i:2,m:'정철민'},
+  {o:'기획제작7CP',c:'A0170',n:'NS)기획제작7CP',i:2,m:'박희연'},
+  {o:'기획제작8CP',c:'A0727',n:'NS)기획제작8CP',i:2,m:'이원웅'},
+  {o:'기획제작9CP',c:'A0736',n:'NS)기획제작9CP',i:2,m:'김인하'},
+];
+const IC=['','i1','i2','i3'];
+function hl(text, q){
+  if(!q) return text;
+  // HTML 태그는 건드리지 않고 텍스트 노드만 하이라이트
+  return text.replace(/(<[^>]*>)|([^<]+)/g, function(m, tag, txt){
+    if(tag) return tag;
+    const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+    return txt.replace(re,'<mark style="background:#ffe066;border-radius:3px;padding:0 2px">$1</mark>');
+  });
+}
+function renderCCTR(data, q){
+  const tb=document.getElementById('cctrBody');tb.innerHTML='';
+  data.forEach(r=>{
+    if(r.g){tb.innerHTML+=`<tr class="grp-hd"><td colspan="3" style="font-size:14px;font-weight:600;color:var(--text);padding:10px 12px 6px">${r.g}</td></tr>`;}
+    else{
+      const nameCell=r.m
+        ? `${hl(r.o,q)} <span style="font-size:11px;color:var(--text3);margin-left:4px">${hl(r.m,q)}님</span>`
+        : hl(r.o,q);
+      tb.innerHTML+=`<tr><td class="${IC[r.i]||'i1'}">${nameCell}</td><td><span class="cctr-code">${hl(r.c,q)}</span></td><td style="color:var(--text2)">${hl(r.n,q)}</td></tr>`;
+    }
+  });
+}
+renderCCTR(D,'');
+function filterCCTR(){
+  const q=document.getElementById('srchInput').value.toLowerCase().trim();
+  if(!q){renderCCTR(D,'');return;}
+  const matched=new Set();
+  D.forEach((r,i)=>{
+    if(!r.g&&(r.o.toLowerCase().includes(q)||r.c.toLowerCase().includes(q)||r.n.toLowerCase().includes(q))){
+      matched.add(i);
+      for(let j=i-1;j>=0;j--){if(D[j].g){matched.add(j);break;}}
+    }
+  });
+  renderCCTR(D.filter((_,i)=>matched.has(i)), q);
+}
+
+// ===== BizOne 모의 =====
+let bzListRows=[];
+let bzDetailRows=[];
+function bzRenderList(){
+  const tb=document.getElementById('bzListBody');
+  if(bzListRows.length===0){tb.innerHTML='<tr><td colspan="15" style="text-align:center;color:#999;padding:12px">오른쪽 파란 + 버튼을 눌러 행을 추가하세요.</td></tr>';return;}
+  tb.innerHTML=bzListRows.map((r,i)=>`
+    <tr class="input-row">
+      <td class="bz-center">${i+1}</td>
+      <td class="bz-center"><span class="bz-row-icon">✏️</span></td>
+      <td class="bz-center"><input type="checkbox"/></td>
+      <td class="bz-center">2026</td>
+      <td></td>
+      <td class="req-cell"><select class="bz-select-cell" onchange="bzListRows[${i}].type=this.value">
+        <option value="">선택</option>
+        <option value="추가" ${r.type==='추가'?'selected':''}>추가</option>
+        <option value="전용" ${r.type==='전용'?'selected':''}>전용</option>
+        <option value="기간전용" ${r.type==='기간전용'?'selected':''}>기간전용</option>
+      </select></td>
+      <td></td><td></td><td></td>
+      <td class="req-cell"><input class="bz-input-cell" value="${r.memo}" placeholder="적요를 입력하세요" oninput="bzListRows[${i}].memo=this.value"/></td>
+      <td></td><td></td><td></td><td></td><td></td>
+    </tr>`).join('');
+}
+function bzRenderDetail(){
+  const tb=document.getElementById('bzDetailBody');
+  if(bzDetailRows.length===0){tb.innerHTML='<tr><td colspan="18" style="text-align:center;color:#999;padding:12px">오른쪽 파란 + 버튼을 눌러 상세 행을 추가하세요.</td></tr>';bzUpdateTotal();return;}
+  tb.innerHTML=bzDetailRows.map((r,i)=>`
+    <tr class="input-row">
+      <td class="bz-center">${i+1}</td>
+      <td class="bz-center"><span class="bz-row-icon">✏️</span></td>
+      <td class="req-cell"><select class="bz-select-cell" onchange="bzDetailRows[${i}].month=this.value">${[...Array(12)].map((_,m)=>`<option value="${m+1}월" ${r.month===`${m+1}월`?'selected':''}>${m+1}월</option>`).join('')}</select></td>
+      <td>미디어콘텐츠</td>
+      <td class="req-cell bz-search-cell"><input class="bz-input-cell" value="${r.cost}" placeholder="코드" style="width:60px" oninput="bzDetailRows[${i}].cost=this.value"/><button class="bz-search-cell button" style="border:1px solid #90b4d8;background:#e8eef8;border-radius:2px;padding:2px 4px;font-size:10px;cursor:pointer">Q</button></td>
+      <td><input class="bz-input-cell" value="${r.costNm}" placeholder="부서명" oninput="bzDetailRows[${i}].costNm=this.value"/></td>
+      <td class="req-cell bz-search-cell"><input class="bz-input-cell" value="${r.acct}" placeholder="계정" style="width:60px" oninput="bzDetailRows[${i}].acct=this.value"/><button style="border:1px solid #90b4d8;background:#e8eef8;border-radius:2px;padding:2px 4px;font-size:10px;cursor:pointer">Q</button></td>
+      <td><select class="bz-select-cell" onchange="bzDetailRows[${i}].acctNm=this.value">${ACCT_OPTIONS.map(a=>'<option value="'+a+'"'+(a===r.acctNm?' selected':'')+'>'+a+'</option>').join('')}</select></td>
+      <td><select class="bz-select-cell" onchange="bzDetailRows[${i}].center=this.value"><option value="">선택</option><option>NS)예능제작1사업부</option><option>NS)예능제작2사업부</option><option>IP)사업기획담당</option><option>IP)콘텐츠마케팅담당</option><option>IP)디지털신사업담당</option></select></td>
+      <td class="bz-num">0</td><td class="bz-num">0</td><td class="bz-num">0</td>
+      <td><select class="bz-select-cell" style="width:50px" onchange="bzDetailRows[${i}].sign=this.value"><option value="+">(+)</option><option value="-">(-)</option></select></td>
+      <td class="req-cell"><input class="bz-input-cell" type="number" value="${r.amount}" placeholder="0" style="text-align:right" oninput="bzDetailRows[${i}].amount=parseInt(this.value)||0;bzUpdateTotal()"/></td>
+      <td class="bz-num">${(r.amount||0).toLocaleString()}</td>
+      <td><input class="bz-input-cell" value="${r.reason}" placeholder="예산조정사유" oninput="bzDetailRows[${i}].reason=this.value"/></td>
+      <td class="bz-center">등록</td><td class="bz-center">성공</td>
+    </tr>`).join('');
+  bzUpdateTotal();
+}
+function bzUpdateTotal(){
+  const total=bzDetailRows.reduce((s,r)=>s+(r.amount||0),0);
+  document.getElementById('bzTotalBudget').textContent='0';
+  document.getElementById('bzTotalActual').textContent='0';
+  document.getElementById('bzTotalRemain').textContent='0';
+  document.getElementById('bzTotalAmount').textContent=total.toLocaleString();
+}
+function bzAddRow(){bzListRows.push({type:'',memo:''});bzRenderList();}
+function bzRemoveRow(){if(bzListRows.length>0){bzListRows.pop();bzRenderList();}}
+function bzAddDetail(){bzDetailRows.push({month:'01월',cost:'',costNm:'',acct:'',acctNm:'',center:'',sign:'+',amount:0,reason:''});bzRenderDetail();}
+function bzRemoveDetail(){if(bzDetailRows.length>0){bzDetailRows.pop();bzRenderDetail();}}
+function bzSubmit(){
+  if(bzListRows.length===0){alert('목록에서 + 버튼을 눌러 행을 먼저 추가해 주세요.');return;}
+  if(bzDetailRows.length===0){alert('상세내역에서 + 버튼을 눌러 내역을 먼저 입력해 주세요.');return;}
+  alert('전자결재 요청이 완료되었습니다.\nIP)사업기획1팀장 장세영님께 결재 요청이 전송되었습니다.');}
+bzRenderList();bzRenderDetail();
+
+// ===== FAQ 키워드 검색 =====
+function scrollCat(id){
+  document.querySelectorAll('.faq-cat-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+
+  // 기존 하이라이트 전부 제거
+  document.querySelectorAll('.faq-item.highlight,.faq-item.highlight-persist').forEach(i=>{
+    i.classList.remove('highlight','highlight-persist');
+  });
+
+  // 해당 카테고리의 faq-item들 찾기
+  let node = el.nextElementSibling;
+  const items = [];
+  while(node && !(node.id && node.id.startsWith('cat-'))){
+    if(node.classList && node.classList.contains('faq-item')) items.push(node);
+    node = node.nextElementSibling;
+  }
+
+  // 순차 진입 애니메이션 후 persist 테두리 유지
+  setTimeout(()=>{
+    items.forEach((item, i)=>{
+      setTimeout(()=>{
+        item.classList.add('highlight-persist');
+      }, i * 80);
+    });
+  }, 350);
+}
+function faqChip(kw){document.getElementById('faqSearchInput').value=kw;faqSearch();}
+function faqSearch(){
+  const q=document.getElementById('faqSearchInput').value.trim().toLowerCase();
+  const resultBox=document.getElementById('faqSearchResult');
+  const faqList=document.getElementById('faqList');
+  if(!q){resultBox.style.display='none';faqList.style.display='block';return;}
+  const items=document.querySelectorAll('#faqList .faq-item');
+  const matched=[];
+  items.forEach(item=>{
+    const tags=(item.dataset.tags||'').toLowerCase();
+    const qText=item.querySelector('.faq-q').textContent.toLowerCase();
+    const aText=item.querySelector('.faq-a').textContent.toLowerCase();
+    if(tags.includes(q)||qText.includes(q)||aText.includes(q)) matched.push(item);
+  });
+  faqList.style.display='none';
+  if(matched.length===0){
+    resultBox.style.display='block';
+    resultBox.innerHTML=`<div class="hint-box">🔍 "<strong>${q}</strong>" 관련 FAQ를 찾지 못했습니다. 아래 전체 목록을 확인하거나 김예원님께 문의해 주세요.</div>`;
+    faqList.style.display='block';
+    return;
+  }
+  resultBox.style.display='block';
+  resultBox.innerHTML=`<div style="font-size:12px;color:var(--text2);margin-bottom:.5rem">🔍 "<strong>${q}</strong>" 검색 결과 ${matched.length}건</div>`+
+    matched.map(item=>{
+      const qText=item.querySelector('.faq-q').textContent.replace('▼','').trim();
+      const aHtml=item.querySelector('.faq-a').innerHTML;
+      const hlA=hl(aHtml,q);
+      return `<div class="faq-item"><button class="faq-q open" onclick="tf(this)">${qText} <span class="faq-chevron" style="transform:rotate(180deg)">▼</span></button><div class="faq-a open">${hlA}</div></div>`;
+    }).join('');
+}
+
+// ===== 현황조회 월별 컬럼 =====
+const CHECK_DATA={
+  'A0335':[
+    {nm:'IP)사업기획1팀',acct:'회의비-부서',      monthly:{1:{b:400000,add:0,tr:0,act:180000},2:{b:400000,add:0,tr:0,act:210000},3:{b:400000,add:100000,tr:0,act:390000},4:{b:400000,add:0,tr:0,act:230000}}},
+    {nm:'IP)사업기획1팀',acct:'교육훈련비-사외',  monthly:{1:{b:200000,add:0,tr:0,act:0},2:{b:200000,add:0,tr:0,act:200000},3:{b:200000,add:0,tr:0,act:0},4:{b:300000,add:100000,tr:0,act:150000}}},
+    {nm:'IP)사업기획1팀',acct:'소모품비-사무용품비',monthly:{1:{b:100000,add:0,tr:0,act:45000},2:{b:100000,add:0,tr:0,act:32000},3:{b:100000,add:0,tr:0,act:87000},4:{b:100000,add:0,tr:0,act:0}}},
+  ],
+  'A0710':[
+    {nm:'IP)사업기획담당',acct:'회의비-부서',          monthly:{1:{b:500000,add:0,tr:0,act:200000},2:{b:500000,add:0,tr:0,act:350000},3:{b:500000,add:0,tr:0,act:410000},4:{b:500000,add:0,tr:0,act:290000}}},
+    {nm:'IP)사업기획담당',acct:'여비교통비-시내교통비',monthly:{1:{b:150000,add:0,tr:0,act:120000},2:{b:150000,add:0,tr:200000,act:310000},3:{b:150000,add:0,tr:0,act:140000},4:{b:150000,add:0,tr:0,act:98000}}},
+  ],
+  'A0336':[
+    {nm:'IP)Non-Scripted BU',acct:'회의비-기타',        monthly:{1:{b:700000,add:0,tr:0,act:320000},2:{b:700000,add:500000,tr:0,act:980000},3:{b:700000,add:0,tr:0,act:450000},4:{b:700000,add:0,tr:0,act:610000}}},
+    {nm:'IP)Non-Scripted BU',acct:'여비교통비-국내출장비',monthly:{1:{b:1000000,add:0,tr:0,act:450000},2:{b:1000000,add:0,tr:0,act:890000},3:{b:1000000,add:0,tr:0,act:1200000},4:{b:1000000,add:0,tr:0,act:780000}}},
+    {nm:'IP)Non-Scripted BU',acct:'해외조사비-항공료',  monthly:{1:{b:1200000,add:0,tr:0,act:0},2:{b:1200000,add:0,tr:0,act:1100000},3:{b:1200000,add:0,tr:300000,act:1450000},4:{b:1200000,add:0,tr:0,act:980000}}},
+  ],
+  'A0716':[
+    {nm:'NS)IP사업팀',acct:'교육훈련비-사외',    monthly:{1:{b:250000,add:0,tr:0,act:0},2:{b:250000,add:0,tr:150000,act:350000},3:{b:250000,add:0,tr:0,act:200000},4:{b:250000,add:0,tr:0,act:120000}}},
+    {nm:'NS)IP사업팀',acct:'도서인쇄비-도서구입',monthly:{1:{b:50000,add:0,tr:0,act:45000},2:{b:50000,add:0,tr:0,act:0},3:{b:50000,add:0,tr:0,act:32000},4:{b:50000,add:0,tr:0,act:18000}}},
+  ],
+};
+
+function bzQueryCheck(){
+  const cost=document.getElementById('checkCostInput').value.trim().toUpperCase();
+  const fromM=parseInt(document.getElementById('checkFromMonth').value);
+  const toM=parseInt(document.getElementById('checkToMonth').value);
+  const tb=document.getElementById('checkResultBody');
+  const head=document.getElementById('checkHead');
+  const data=CHECK_DATA[cost];
+  if(!data){
+    head.innerHTML='<tr><th>No.</th><th>코스트센터명</th><th>계정명</th><th>안내</th></tr>';
+    tb.innerHTML=`<tr><td colspan="4" style="text-align:center;color:#999;padding:16px">코스트센터 "${cost||'(미입력)'}"의 샘플 데이터가 없습니다.<br><span style="font-size:10px">샘플: A0335 / A0336 / A0710 / A0716</span></td></tr>`;
+    return;
+  }
+  const months=[];
+  for(let m=fromM;m<=toM;m++) months.push(m);
+  const subCols=['기초예산','추가','전용','실적','잔액'];
+  const monthBg=['#dce6f4','#d4e0f0','#ccdaec','#c4d4e8','#bccee4','#b4c8e0','#acc2dc','#a4bcd8','#9cb6d4','#94b0d0','#8caac8','#84a4c4'];
+  const totalBg='#b0c8e8';
+
+  // 헤더 행1
+  let h1='<tr><th rowspan="2" style="width:24px">No.</th><th rowspan="2" style="min-width:90px">코스트센터명</th><th rowspan="2" style="min-width:100px">계정명</th>';
+  months.forEach(m=>{h1+=`<th colspan="5" style="background:${monthBg[(m-1)%12]};text-align:center">${m}월</th>`;});
+  h1+=`<th colspan="5" style="background:${totalBg};text-align:center">종합</th></tr>`;
+  // 헤더 행2
+  let h2='<tr>';
+  months.forEach(()=>{subCols.forEach(c=>{h2+=`<th style="font-size:10px;white-space:nowrap">${c}</th>`;});});
+  subCols.forEach(c=>{h2+=`<th style="font-size:10px;white-space:nowrap;background:${totalBg}">${c}</th>`;});
+  h2+='</tr>';
+  head.innerHTML=h1+h2;
+
+  let sumTB=0,sumTA=0,sumTR=0;
+  tb.innerHTML=data.map((r,i)=>{
+    let row=`<tr><td class="bz-center">${i+1}</td><td>${r.nm}</td><td>${r.acct}</td>`;
+    let totB=0,totAdd=0,totTr=0,totAct=0;
+    months.forEach(m=>{
+      const d=r.monthly[m]||{b:0,add:0,tr:0,act:0};
+      const remain=d.b+d.add+d.tr-d.act;
+      totB+=d.b;totAdd+=d.add;totTr+=d.tr;totAct+=d.act;
+      row+=`<td class="bz-num">${d.b.toLocaleString()}</td>`;
+      row+=`<td class="bz-num" style="color:${d.add?'#1565c0':'#aaa'}">${d.add.toLocaleString()}</td>`;
+      row+=`<td class="bz-num" style="color:${d.tr?'#1565c0':'#aaa'}">${d.tr.toLocaleString()}</td>`;
+      row+=`<td class="bz-num">${d.act.toLocaleString()}</td>`;
+      row+=`<td class="bz-num" style="color:${remain<0?'#c0392b':'inherit'};font-weight:${remain<0?'700':'400'}">${remain.toLocaleString()}</td>`;
+    });
+    const totRemain=totB+totAdd+totTr-totAct;
+    sumTB+=totB;sumTA+=totAct;sumTR+=totRemain;
+    row+=`<td class="bz-num" style="background:#eef4fc;font-weight:500">${totB.toLocaleString()}</td>`;
+    row+=`<td class="bz-num" style="background:#eef4fc;color:${totAdd?'#1565c0':'#aaa'}">${totAdd.toLocaleString()}</td>`;
+    row+=`<td class="bz-num" style="background:#eef4fc;color:${totTr?'#1565c0':'#aaa'}">${totTr.toLocaleString()}</td>`;
+    row+=`<td class="bz-num" style="background:#eef4fc">${totAct.toLocaleString()}</td>`;
+    row+=`<td class="bz-num" style="background:#eef4fc;color:${totRemain<0?'#c0392b':'inherit'};font-weight:700">${totRemain.toLocaleString()}</td>`;
+    row+='</tr>';
+    return row;
+  }).join('');
+  document.getElementById('checkTotalBudget').textContent=sumTB.toLocaleString()+'원';
+  document.getElementById('checkTotalActual').textContent=sumTA.toLocaleString()+'원';
+  document.getElementById('checkTotalRemain').textContent=sumTR.toLocaleString()+'원';
+}
+
+// 계정명 데이터
+const ACCT_OPTIONS=[
+  '회의비-임원','회의비-부서','회의비-기타',
+  '교육훈련비-사외','교육훈련비-워크샵 (일반)',
+  '도서인쇄비-도서구입','도서인쇄비-외주인쇄비','도서인쇄비-정기간행물','도서인쇄비-신문구독료',
+  '소모품비-사무용품비',
+  '통신비-휴대폰','통신비-우편료','통신비-인터넷망','통신비-기타',
+  '보험료-기타',
+  '차량유지비-수선비','차량유지비-주차/통행료',
+  '지급수수료-외주용역수수료','지급수수료-배송','지급수수료-증명수수료','지급수수료-SMS','지급수수료-기타',
+  '세금과공과-인지세',
+  '대외업무활동비-법인카드사용분','대외업무활동비-대외경조사','대외업무활동비-문화',
+  '조사연구비-리서치',
+  '수입통관료-운송비',
+  '여비교통비-시내교통비','여비교통비-국내출장비','여비교통비-유류대',
+  '해외조사비-숙박','해외조사비-항공료','해외조사비-식대 여비','해외조사비-시장조사비',
+];
+const ACCT_OPT_HTML='<option value="">계정 선택</option>'+ACCT_OPTIONS.map(a=>`<option>${a}</option>`).join('');
+function renderAcct(){}
+function filterAcct(){}
+
+// ===== AI 챗봇 =====
+function sq(q){document.getElementById('chatInput').value=q;sm();}
+const KB=`[IP사업본부(예능사업群) 부서예산 규정]
+- 예산 조정 신청은 2단계: 사전 품의 진행, BizOne 예산조정신청
+- 품의 결재선: 1차 상사(팀장/CP, 부재 시 생략) → IP사업기획담당 합의 → 2차 상사(담당/사업부장/EP)
+- BizOne 경로: BizOne > 비용계획 > 예산조정신청
+- 조정유형: 추가/전용/기간전용 중 선택, 목록 오른쪽 파란 + 버튼으로 행 추가
+- 결재선 지정: IP)사업기획1팀장 장세영님
+- 예산 현황 조회: BizOne > 비용계획 > 기간별 예산대비실적조회
+- 분기 통제: 전용 시 분기 마감 전 품의 상신 필수 (3분기는 9/30 이전)
+- 분기 지나면 자동 이월 불가, 별도 조정 신청 필요
+- 계정과 기간 동시 전용 불가
+- 예산 품의 후 별도 BizOne 조정 신청 필요 (품의만으로 완료 아님)
+- 말일 신청 시 결재 지연 가능, 5~7일 전 사전 신청 권장
+- 재무 마감 이후 누락 시 누락 품의 작성 후 별도 정산
+- 외부 업체 지급(법인카드 외): 예외지급품의 작성 필수
+- 예외 지급/누락 품의: 재무파트 합의 추가 필수 (합의: 재무운영팀장 정병환님)
+- 당월 사용분은 당월 내 정산 원칙
+- 예산 이월: 자동 불가, 별도 품의+전용 신청 후 IP)사업기획1팀 승인 시 반영
+- 제작비는 원가 귀속, 경비 처리 불가. 경비성 비용은 사전 품의+사업기획담당 합의 필요
+- 정산 완료 후 임시전기 상태: 재무 승인 대기, 급하면 재무팀(김창현님, 이현준님) 문의
+- IT 자산: 업무용 100만원 이상 자산 처리, 100만원 미만 비용 처리
+- 기간 전용: 계정은 동일하고 기간(월)만 변경. 전용: 전체 계정 간 이동 가능
+- 대리운전: 지급수수료-외주용역수수료로 처리, 조직장 한정
+- 회의비: 업무 목적 회의 소요 비용, 이벤트성 행사(타운홀 미팅 등)도 포함
+- 유류대: 조직장 아니어도 가능, 시내교통비 예산에서 전용하여 사용
+- 출장 일비 환율 차이: 품의 당시 환율이 높으면 품의 환율 기준 예산 추가 후 현재 환율로 신청. 품의 당시 환율이 낮으면 출장 보고서 내 현재 환율 기준 추가 기재 (이미 결재 시 누락 품의에 기입)
+- 문의처: IP)사업기획1팀 김예원님`;
+
+async function sm(){
+  const inp=document.getElementById('chatInput');
+  const q=inp.value.trim();if(!q)return;
+  inp.value='';
+  const msgs=document.getElementById('chatMsgs');
+  msgs.innerHTML+=`<div class="msg user">${q}</div>`;
+  const t=document.createElement('div');t.className='msg bot';t.textContent='답변 생성 중...';
+  msgs.appendChild(t);msgs.scrollTop=msgs.scrollHeight;
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:`당신은 IP사업본부(예능사업群) IP)사업기획1팀의 부서예산 안내 도우미입니다. 아래 규정만 참고해 친절하고 간결하게 한국어로 답변하세요. 반드시 마크다운(**, ##, - 등)을 사용하지 말고 순수 텍스트로만 답변하세요. 줄바꿈이 필요할 때는 자연스럽게 문장을 나눠주세요. 모르는 내용은 "IP)사업기획1팀 김예원님께 문의해 주세요"라고 안내하세요.\n\n${KB}`,
+        messages:[{role:'user',content:q}]})});
+    const d=await r.json();
+    t.textContent=d.content?.[0]?.text||'답변을 가져오지 못했습니다.';
+  }catch(e){t.textContent='오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';}
+  msgs.scrollTop=msgs.scrollHeight;
+}
+</script>
+</body>
+</html>
